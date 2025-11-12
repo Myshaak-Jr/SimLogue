@@ -4,21 +4,12 @@
 #include "./ammeter.h"
 
 
-Part::Part() : ammeter(nullptr) {}
+Part::Part() : ammeters() {}
 
-
-bool Part::has_ammeter() const {
-	return ammeter != nullptr;
+void Part::measure_current(Pin a, Pin b, Ammeter* am) {
+	
 }
 
-Ammeter* Part::get_ammeter() {
-	return ammeter;
-}
-
-const Ammeter* Part::get_ammeter() const {
-	return ammeter;
-}
-
-void Part::set_ammeter(Ammeter* ammeter) {
-	this->ammeter = ammeter;
+const std::vector<Ammeter*>& Part::get_measured_pins() const {
+	return ammeters;
 }

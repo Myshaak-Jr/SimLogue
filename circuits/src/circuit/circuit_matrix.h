@@ -2,11 +2,12 @@
 
 #include <vector>
 
-#include "./ammeter.h"
+#include "../lingebra/lingebra.h"
 
 
 class CircuitMatrix {
 private:
+	
 
 public:
 	CircuitMatrix();

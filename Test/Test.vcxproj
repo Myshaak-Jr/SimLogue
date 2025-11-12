@@ -168,11 +168,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="string_repr.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\circuits\circuits.vcxproj">
       <Project>{ef342f53-f27b-4ab9-843d-bd48bf105b57}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\lingebra.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

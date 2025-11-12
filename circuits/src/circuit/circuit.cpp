@@ -1,7 +1,7 @@
 #include "./circuit.h"
 
 
-Circuit::Circuit() : matrix() {
+Circuit::Circuit(double timestep) : timestep(timestep), matrix() {
 	ground = add_part<VoltageSource>(0.0f);
 }
 

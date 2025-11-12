@@ -29,7 +29,7 @@ struct ConstPin {
 
 class Part {
 private:
-	Ammeter* ammeter;
+	std::vector<Ammeter*> ammeters;
 
 public:
 	Part();
@@ -46,8 +46,14 @@ public:
 
 	virtual inline constexpr bool is_voltage_source() const { return false; }
 
-	bool has_ammeter() const;
-	Ammeter* get_ammeter();
-	const Ammeter* get_ammeter() const;
-	void set_ammeter(Ammeter* ammeter);
+	/*  Sets a flag that the simulation should keep a record of the current
+		between the pins a and b of this part using the Ammeter 'am'
+		The Pins have to belong to this Part and have to differ
+		The ammeter have to be exclusive to this pair of pins
+	*/
+	void measure_current(Pin a, Pin b, Ammeter* am);
+
+	/* Returns all the ammeters assigned to this part
+	*/
+	const std::vector<Ammeter*>& get_measured_pins() const;
 };

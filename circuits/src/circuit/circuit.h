@@ -27,7 +27,7 @@ private:
 	void update();
 
 public:
-	Circuit();
+	explicit Circuit(double timestep);
 	~Circuit() noexcept = default;
 
 
@@ -50,11 +50,11 @@ public:
 
 	void connect(Pin pin_a, Pin pin_b);
 
-	void set_timestep(double dt);
-	void get_timestep() const;
+	inline void set_timestep(double dt) { timestep = dt; }
+	inline double get_timestep() const { return timestep; }
 
-	/*void add_voltmeter(Node* node);
-	void add_ammeter(Part* part);*/
+
+	double get_voltage_on_pin(Pin pin) const;
 
 	void run_for(size_t num_steps);
 };

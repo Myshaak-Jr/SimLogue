@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <!-- For lingebra::Vector -->
+  <Type Name="lingebra::Vector&lt;*&gt;">
+    <DisplayString>[{data.size()} elements]</DisplayString>
+    <Expand>
+      <Item Name="dim()">data.size()</Item>
+      <ArrayItems>
+        <Size>data.size()</Size>
+        <ValuePointer>data._Myfirst</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <!-- For lingebra::Matrix -->
+  <Type Name="lingebra::Matrix&lt;*&gt;">
+    <DisplayString>[{num_rows}�{num_cols}]</DisplayString>
+    <Expand>
+      <Item Name="Rows">num_rows</Item>
+      <Item Name="Cols">num_cols</Item>
+      <ArrayItems>
+        <Size>data.size()</Size>
+        <ValuePointer>data._Myfirst</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+</AutoVisualizer>

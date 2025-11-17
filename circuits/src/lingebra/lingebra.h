@@ -432,6 +432,8 @@ namespace lingebra {
 		}
 
 		constexpr void assign(const size_t m, const size_t n, const F& value = zero) {
+			num_rows = m;
+			num_cols = n;
 			data.assign(m, std::vector<F>(n, value));
 		}
 

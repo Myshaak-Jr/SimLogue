@@ -14,15 +14,17 @@ void VoltageScope::record_voltage(real_t time) {
 }
 
 void VoltageScope::export_data() const {
-	std::ofstream file(export_path / std::format("voltage-between-{}-and-{}.csv", a.name, b.name));
+	fs::path filepath = export_path / std::format("voltage-between-{}-and-{}.csv", a.name, b.name);
+	std::ofstream file(filepath);
+	if (!file.is_open()) {
+		throw std::runtime_error("Failed to open output file: " + filepath.string());
+	}
 
 	file << "Time, Voltage\n";
 
 	for (const DataEntry& entry : data) {
 		file << entry.time << ", " << entry.voltage << "\n";
 	}
-
-	file.close();
 }
 
 
@@ -36,7 +38,11 @@ void CurrentScope::record_current(real_t time) {
 }
 
 void CurrentScope::export_data() const {
-	std::ofstream file(export_path / std::format("current-between-{}-and-{}.csv", a.name, b.name));
+	fs::path filepath = export_path / std::format("current-between-{}-and-{}.csv", a.name, b.name);
+	std::ofstream file(filepath);
+	if (!file.is_open()) {
+		throw std::runtime_error("Failed to open output file: " + filepath.string());
+	}
 
 	file << "Time, Current\n";
 

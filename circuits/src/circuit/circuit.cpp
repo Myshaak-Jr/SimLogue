@@ -5,7 +5,9 @@
 Circuit::Circuit(real_t timestep, const fs::path& scope_export_path) :
 	timestep(timestep),
 	matrix(),
-	scope_export_path(scope_export_path / make_timestamp()) {
+	scope_export_path(scope_export_path / make_timestamp())
+{
+	fs::create_directories(this->scope_export_path);
 	ground = add_part<VoltageSource>("GND", 0.0f);
 }
 

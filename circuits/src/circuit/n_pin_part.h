@@ -64,5 +64,5 @@ public:
 	Pin pin() requires(N == 1) { return pin(0); }
 	ConstPin pin() const requires(N == 1) { return pin(0); }
 
-	real_t get_current() const requires(N == 2) { return get_current_between(pin(0), pin(1)); }
+	scalar get_current() const requires(N == 2) { return get_current_between(pin(0), pin(1)); }
 };

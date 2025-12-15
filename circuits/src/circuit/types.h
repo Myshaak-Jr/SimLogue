@@ -2,7 +2,7 @@
 
 
 #ifdef HIGH_PRECISION
-using real_t = double;
+using scalar = double;
 #else
-using real_t = float;
+using scalar = float;
 #endif // HIGH_PRECISION

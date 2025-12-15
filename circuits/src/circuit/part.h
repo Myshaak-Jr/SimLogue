@@ -10,6 +10,13 @@
 #include "pin.h"
 
 
+struct StampParams {
+	const ConstPin& ground;
+	scalar timestep;
+	scalar timestep_inv;
+};
+
+
 class Part {
 public:
 	Part() = default;
@@ -21,12 +28,12 @@ public:
 	virtual Pin pin(size_t pin_id) = 0;
 	virtual ConstPin pin(size_t pin_id) const = 0;
 
-	virtual void stamp(CircuitMatrix& matrix) const = 0;
-	virtual void reserve_additional_rows(CircuitMatrix& matrix) {}
-	virtual void update(const CircuitMatrix& matrix) {};
+	virtual void pre_stamp(CircuitMatrix& matrix, const StampParams& params) {}
+	virtual void stamp(CircuitMatrix& matrix, const StampParams& params) const = 0;
+	virtual void post_stamp(const CircuitMatrix& matrix, const StampParams& params) {};
 
 	virtual const std::string& get_name() const = 0;
 	virtual void set_name(const std::string& name) = 0;
 
-	virtual real_t get_current_between(const ConstPin& a, const ConstPin& b) const = 0;
+	virtual scalar get_current_between(const ConstPin& a, const ConstPin& b) const = 0;
 };

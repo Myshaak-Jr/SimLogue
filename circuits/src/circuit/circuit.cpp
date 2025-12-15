@@ -2,7 +2,7 @@
 #include "util.h"
 
 
-Circuit::Circuit(real_t timestep, const fs::path& scope_export_path) :
+Circuit::Circuit(scalar timestep, const fs::path& scope_export_path) :
 	timestep(timestep),
 	matrix(),
 	scope_export_path(scope_export_path / make_timestamp())
@@ -40,35 +40,41 @@ void Circuit::connect(const Pin& pin_a, const Pin& pin_b) {
 }
 
 void Circuit::update_parts() {
+	StampParams params{
+	.ground = ground->pin(),
+	.timestep = timestep,
+	.timestep_inv = 1.0 / timestep
+	};
+
 	// prepare the matrix and count the number of rows needed
 	matrix.reset_row_count();
 	for (auto& node : nodes) {
-		node->set_row_id(matrix.reserve_row());
+		node->node_id = matrix.reserve_row();
 	}
 	for (auto& part : parts) {
-		part->reserve_additional_rows(matrix);
+		part->pre_stamp(matrix, params);
 	}
-	matrix.init(timestep);
+
+	matrix.init();
 
 	// fill the matrix
 	for (const auto& part : parts) {
-		part->stamp(matrix);
+		part->stamp(matrix, params);
 	}
 
 	matrix.solve();
 
 	for (auto& node : nodes) {
-		const size_t id = node->get_node_id();
-		node->set_voltage(matrix.get_solution_value(id));
+		node->voltage = matrix.get_solution_value(node->node_id);
 	}
 
 	for (auto& part : parts) {
-		part->update(matrix);
+		part->post_stamp(matrix, params);
 	}
 }
 
 void Circuit::run_for_steps(size_t num_steps) {
-	real_t t = 0;
+	scalar t = 0;
 
 	for (size_t frame = 0; frame < num_steps; ++frame) {
 		update_parts();
@@ -84,7 +90,7 @@ void Circuit::run_for_steps(size_t num_steps) {
 	}
 }
 
-void Circuit::run_for_seconds(real_t secs) {
+void Circuit::run_for_seconds(scalar secs) {
 	run_for_steps(static_cast<size_t>(secs/timestep));
 }
 

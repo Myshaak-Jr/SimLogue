@@ -13,8 +13,8 @@ namespace fs = std::filesystem;
 class VoltageScope {
 private:
 	struct DataEntry {
-		real_t time;
-		real_t voltage;
+		scalar time;
+		scalar voltage;
 	};
 
 	std::vector<DataEntry> data;
@@ -27,7 +27,7 @@ private:
 public:
 	VoltageScope(const ConstPin& a, const ConstPin& b, const fs::path& export_path);
 
-	void record_voltage(real_t time);
+	void record_voltage(scalar time);
 
 	void export_data() const;
 };
@@ -35,8 +35,8 @@ public:
 class CurrentScope {
 private:
 	struct DataEntry {
-		real_t time;
-		real_t current;
+		scalar time;
+		scalar current;
 	};
 
 	std::vector<DataEntry> data;
@@ -49,7 +49,7 @@ private:
 public:
 	CurrentScope(const ConstPin& a, const ConstPin& b, const fs::path& export_path);
 
-	void record_current(real_t time);
+	void record_current(scalar time);
 
 	void export_data() const;
 };

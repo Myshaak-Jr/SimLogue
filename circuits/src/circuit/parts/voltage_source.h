@@ -6,37 +6,37 @@
 
 class VoltageSource : public NPinPart<1> {
 private:
-	real_t voltage;
+	scalar voltage;
 	size_t branch_id;
 
-	real_t current;
+	scalar current;
 
 public:
-	explicit VoltageSource(const std::string& name, real_t voltage);
+	explicit VoltageSource(const std::string& name, scalar voltage);
 	~VoltageSource() noexcept;
 
-	void stamp(CircuitMatrix& matrix) const override;
-	void reserve_additional_rows(CircuitMatrix& matrix) override;
-	void update(const CircuitMatrix& matrix) override;
+	void pre_stamp(CircuitMatrix& matrix, const StampParams& params) override;
+	void stamp(CircuitMatrix& matrix, const StampParams& params) const override;
+	void post_stamp(const CircuitMatrix& matrix, const StampParams& params) override;
 
-	real_t get_current_between(const ConstPin& a, const ConstPin& b) const override;
+	scalar get_current_between(const ConstPin& a, const ConstPin& b) const override;
 };
 
 
 class VoltageSource2Pin : public NPinPart<2> {
 private:
-	real_t voltage;
+	scalar voltage;
 	size_t branch_id;
 
-	real_t current;
+	scalar current;
 
 public:
-	explicit VoltageSource2Pin(const std::string& name, real_t voltage);
+	explicit VoltageSource2Pin(const std::string& name, scalar voltage);
 	~VoltageSource2Pin() noexcept;
 
-	void stamp(CircuitMatrix& matrix) const override;
-	void reserve_additional_rows(CircuitMatrix& matrix) override;
-	void update(const CircuitMatrix& matrix) override;
+	void pre_stamp(CircuitMatrix& matrix, const StampParams& params) override;
+	void stamp(CircuitMatrix& matrix, const StampParams& params) const override;
+	void post_stamp(const CircuitMatrix& matrix, const StampParams& params) override;
 
-	real_t get_current_between(const ConstPin& a, const ConstPin& b) const override;
+	scalar get_current_between(const ConstPin& a, const ConstPin& b) const override;
 };

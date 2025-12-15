@@ -2,6 +2,7 @@
 
 #include "circuit/circuit.h"
 #include "circuit/parts/resistor.h"
+#include "circuit/parts/capacitor.h"
 
 
 int main() {
@@ -11,7 +12,7 @@ int main() {
 	VoltageSource* source = circuit.add_part<VoltageSource>("V1", 5.0f);
 
 	Resistor* r1 = circuit.add_part<Resistor>("R1", 10.0f);
-	Resistor* r2 = circuit.add_part<Resistor>("R2", 10.0f);
+	Capacitor* r2 = circuit.add_part<Capacitor>("C1", 10.0f);
 
 	circuit.connect(r1->pin(0), source->pin());
 	circuit.connect(r1->pin(1), r2->pin(0));

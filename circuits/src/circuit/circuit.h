@@ -22,7 +22,7 @@ private:
 	std::vector<std::unique_ptr<CurrentScope>> current_scopes;
 
 	CircuitMatrix matrix;
-	real_t timestep;
+	scalar timestep;
 	fs::path scope_export_path;
 
 	
@@ -30,7 +30,7 @@ private:
 	void update_parts();
 
 public:
-	explicit Circuit(real_t timestep, const fs::path& scope_export_path = "./");
+	explicit Circuit(scalar timestep, const fs::path& scope_export_path = "./");
 	~Circuit() noexcept = default;
 
 
@@ -48,8 +48,8 @@ public:
 
 	void connect(const Pin& pin_a, const Pin& pin_b);
 
-	inline void set_timestep(real_t dt) { timestep = dt; }
-	inline real_t get_timestep() const { return timestep; }
+	inline void set_timestep(scalar dt) { timestep = dt; }
+	inline scalar get_timestep() const { return timestep; }
 
 	void scope_voltage(const ConstPin& a, const ConstPin& b);
 	// Pin a and b must be of the same part or the single pin voltage source and ground pin
@@ -64,5 +64,5 @@ public:
 	void export_tables() const;
 
 	void run_for_steps(size_t num_steps);
-	void run_for_seconds(real_t secs);
+	void run_for_seconds(scalar secs);
 };

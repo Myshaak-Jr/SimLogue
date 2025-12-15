@@ -132,6 +132,9 @@
     <ClCompile Include="src\circuit\circuit.cpp" />
     <ClCompile Include="src\circuit\circuit_matrix.cpp" />
     <ClCompile Include="src\circuit\n_pin_part.h" />
+    <ClCompile Include="src\circuit\parts\capacitor.cpp" />
+    <ClCompile Include="src\circuit\parts\current_source.cpp" />
+    <ClCompile Include="src\circuit\parts\inductor.cpp" />
     <ClCompile Include="src\circuit\parts\resistor.cpp" />
     <ClCompile Include="src\circuit\parts\voltage_source.cpp" />
     <ClCompile Include="src\circuit\scope.cpp" />
@@ -143,6 +146,9 @@
     <ClInclude Include="src\circuit\circuit_matrix.h" />
     <ClInclude Include="src\circuit\node.h" />
     <ClInclude Include="src\circuit\part.h" />
+    <ClInclude Include="src\circuit\parts\capacitor.h" />
+    <ClInclude Include="src\circuit\parts\current_source.h" />
+    <ClInclude Include="src\circuit\parts\inductor.h" />
     <ClInclude Include="src\circuit\pin.h" />
     <ClInclude Include="src\circuit\parts\resistor.h" />
     <ClInclude Include="src\circuit\scope.h" />

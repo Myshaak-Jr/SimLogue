@@ -3,14 +3,13 @@
 #include "../n_pin_part.h"
 
 
-class Resistor : public NPinPart<2> {
+class CurrentSource : public NPinPart<2> {
 private:
-	scalar ohms;
-	scalar conductance;
+	scalar current;
 
 public:
-	Resistor(const std::string& name, scalar ohms);
-	~Resistor() noexcept = default;
+	CurrentSource(const std::string& name, scalar current);
+	~CurrentSource() noexcept = default;
 
 	void stamp(CircuitMatrix& matrix, const StampParams& params) const override;
 

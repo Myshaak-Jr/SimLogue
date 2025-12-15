@@ -8,8 +8,8 @@
 
 VoltageScope::VoltageScope(const ConstPin& a, const ConstPin& b, const fs::path& export_path) : a(a), b(b), export_path(export_path) {}
 
-void VoltageScope::record_voltage(real_t time) {
-	real_t voltage = a.node->get_voltage() - b.node->get_voltage();
+void VoltageScope::record_voltage(scalar time) {
+	scalar voltage = a.node->voltage - b.node->voltage;
 	data.push_back(DataEntry(time, voltage));
 }
 
@@ -30,10 +30,10 @@ void VoltageScope::export_data() const {
 
 CurrentScope::CurrentScope(const ConstPin& a, const ConstPin& b, const fs::path& export_path) : a(a), b(b), export_path(export_path) {}
 
-void CurrentScope::record_current(real_t time) {
+void CurrentScope::record_current(scalar time) {
 	const Part* part = a.owner;
 
-	real_t current = part->get_current_between(a, b);
+	scalar current = part->get_current_between(a, b);
 	data.push_back(DataEntry(time, current));
 }
 

@@ -1,7 +1,10 @@
 #pragma once
 
+#include <cmath>
 #include <concepts>
 #include <cstdint>
+#include <cstdlib>
+#include <format>
 #include <initializer_list>
 #include <iostream>
 #include <iterator>
@@ -15,7 +18,7 @@
 
 
 namespace lingebra {
-// generic abs
+// ==== Automatic Absolute Value Deduction ====
 using std::abs;
 
 template <class T>
@@ -25,16 +28,14 @@ template <class T>
 concept has_abs_static_method = requires (const T & a) { { T::abs(a) } -> std::convertible_to<T>; };
 
 template <has_abs_method T>
-constexpr T abs(const T &x) {
-	return x.abs();
-}
+constexpr T abs(const T &x) { return x.abs(); }
 
 template <has_abs_static_method T>
-constexpr T abs(const T &x) {
-	return T::abs(x);
-}
+constexpr T abs(const T &x) { return T::abs(x); }
 
-// is prime
+// ==== Prime Value Checker ====
+
+// runs in $\mathcal{O}(\log n)$
 constexpr bool is_prime(size_t n) noexcept {
 	if (n < 2) return false;
 	for (size_t i = 2; i * i <= n; ++i) {
@@ -44,8 +45,18 @@ constexpr bool is_prime(size_t n) noexcept {
 }
 
 
-// modulo integer
-
+/// @brief Integer arithmetic modulo N.
+///
+/// Represents an integer value in the ring Z_n.
+/// The stored value is always normalized to the range:
+///     0 <= value < N
+///
+/// @tparam N Modulus (must be greater than 1).
+///
+/// ### Notes
+/// - For prime N, division is supported.
+/// - For non-prime N, division is intentionally disabled at compile time.
+/// - The internal storage type is chosen automatically to fit N efficiently.
 template <size_t N>
 	requires (N > 1)
 class ModInt {
@@ -62,6 +73,12 @@ private:
 public:
 	constexpr ModInt(value_type value = 0) noexcept : value(((value %n) + n) % n) {}
 
+	/// @brief Generates a uniformly distributed random modulo value.
+	///
+	/// @tparam TEngine A uniform random bit generator.
+	/// @param engine Random engine instance.
+	///
+	/// @return Random ModInt in range [0, N).
 	template <class TEngine>
 	static ModInt make_random(TEngine &engine) {
 		std::uniform_int_distribution<uint64_t> dist(0, static_cast<uint16_t>(get_n()) - 1);
@@ -118,10 +135,16 @@ public:
 		return ModInt(*this);
 	}
 
-	// Prime N only
-
-	// uses Extended Euclidian
-	// Undefined behavior if called on zero.
+	/// @brief Computes the multiplicative inverse.
+	///
+	/// @pre N must be prime.
+	/// @pre value != 0
+	///
+	/// Uses the Extended Euclidean Algorithm.
+	///
+	/// @return Multiplicative inverse of this value modulo N.
+	///
+	/// @warning Calling this on zero results in undefined behavior.
 	constexpr ModInt inverse() const noexcept requires (is_prime(N)) {
 		value_type t = 0;
 		value_type new_t = 1;
@@ -160,9 +183,11 @@ using Z_7 = ModInt<7>;
 
 template <class T> struct is_ModInt : std::false_type {};
 template <size_t N> struct is_ModInt<ModInt<N>> : std::true_type {};
-template <class T> inline constexpr bool is_ModInt_v = is_ModInt<T>::value;
+template <class T> constexpr bool is_ModInt_v = is_ModInt<T>::value;
 template <class T> concept ModIntLike = is_ModInt_v<T>;
 
+
+// ==== Automatic Ones and Zeros ====
 
 template <class T>
 consteval T make_zero() {
@@ -209,7 +234,9 @@ consteval T make_one() {
 }
 
 
-// Vectors and Matrices
+// ==== Vectors and Matrices ====
+
+/// @brief An arithmetic vector
 template <class F>
 class Vector {
 public:
@@ -221,18 +248,18 @@ private:
 	static constexpr F zero = make_zero<F>();
 
 public:
-	constexpr Vector() noexcept = default;
-	constexpr Vector(size_t size, const F &value) : data(size, value) {}
-	constexpr explicit Vector(size_t size) : Vector(size, zero) {}
-	constexpr Vector(std::initializer_list<F> list) : data(list) {}
-	constexpr Vector(const std::vector<F> &data) : data(data) {}
+	Vector() noexcept = default;
+	Vector(size_t size, const F &value) : data(size, value) {}
+	explicit Vector(size_t size) : Vector(size, zero) {}
+	Vector(std::initializer_list<F> list) : data(list) {}
+	Vector(const std::vector<F> &data) : data(data) {}
 	template <std::input_iterator Iter>
-	constexpr Vector(Iter first, Iter last) : data(first, last) {}
+	Vector(Iter first, Iter last) : data(first, last) {}
 
-	constexpr Vector(const Vector &) = default;
-	constexpr Vector(Vector &&) noexcept = default;
-	constexpr Vector &operator=(const Vector &) = default;
-	constexpr Vector &operator=(Vector &&) noexcept = default;
+	Vector(const Vector &) = default;
+	Vector(Vector &&) noexcept = default;
+	Vector &operator=(const Vector &) = default;
+	Vector &operator=(Vector &&) noexcept = default;
 
 	~Vector() = default;
 
@@ -247,32 +274,32 @@ public:
 		return vec;
 	}
 
-	constexpr void clear() {
+	void clear() {
 		assign(data.size(), zero);
 	}
 
-	constexpr void assign(size_t new_size, const F &value = zero) {
+	void assign(size_t new_size, const F &value = zero) {
 		data.assign(new_size, value);
 	}
 
-	constexpr F &operator[](size_t pos) noexcept {
+	F &operator[](size_t pos) noexcept {
 		return data[pos];
 	}
 
-	constexpr const F &operator[](size_t pos) const noexcept {
+	const F &operator[](size_t pos) const noexcept {
 		return data[pos];
 	}
 
-	constexpr size_t dim() const noexcept {
+	size_t dim() const noexcept {
 		return data.size();
 	}
 
-	constexpr void swap_values(size_t a, size_t b) noexcept(std::is_nothrow_swappable_v<F>) {
+	void swap_values(size_t a, size_t b) noexcept(std::is_nothrow_swappable_v<F>) {
 		using std::swap;
 		swap(data[a], data[b]);
 	}
 
-	constexpr std::string repr() const {
+	std::string repr() const {
 		std::stringstream ss;
 		for (size_t i = 0; i < data.size(); ++i) {
 			ss << (i == 0 ? "[" : ", ");
@@ -289,11 +316,11 @@ public:
 		return ss.str();
 	}
 
-	constexpr bool operator==(const Vector &other) const {
+	bool operator==(const Vector &other) const {
 		return data == other.data;
 	}
 
-	constexpr Vector &operator+=(const Vector &other) {
+	Vector &operator+=(const Vector &other) {
 		if (dim() != other.dim()) {
 			throw std::runtime_error("Vector must be of the same dimension");
 		}
@@ -305,13 +332,13 @@ public:
 		return *this;
 	}
 
-	constexpr Vector operator+(const Vector &other) const {
+	Vector operator+(const Vector &other) const {
 		Vector result(*this);
 		result += other;
 		return result;
 	}
 
-	constexpr F operator*(const Vector &other) const {
+	F operator*(const Vector &other) const {
 		if (dim() != other.dim()) {
 			throw std::runtime_error("Vector must be of the same dimension");
 		}
@@ -325,29 +352,29 @@ public:
 		return sum;
 	}
 
-	constexpr Vector &operator*=(const F &scalar) {
+	Vector &operator*=(const F &scalar) {
 		for (size_t i = 0; i < dim(); ++i) {
 			data[i] *= scalar;
 		}
 		return *this;
 	}
-	constexpr Vector &operator/=(const F &scalar) {
+	Vector &operator/=(const F &scalar) {
 		for (size_t i = 0; i < dim(); ++i) {
 			data[i] /= scalar;
 		}
 		return *this;
 	}
 
-	constexpr Vector operator*(const F &scalar) const {
+	Vector operator*(const F &scalar) const {
 		Vector temp(*this);
 		temp *= scalar;
 		return temp;
 	}
-	constexpr friend Vector operator*(const F &scalar, const Vector &vec) {
+	friend Vector operator*(const F &scalar, const Vector &vec) {
 		return vec * scalar;
 	}
 
-	constexpr Vector operator/(const F &scalar) const {
+	Vector operator/(const F &scalar) const {
 		Vector temp(*this);
 		temp /= scalar;
 		return temp;
@@ -355,7 +382,12 @@ public:
 };
 
 
-// A dense matrix
+// ---- Predeclaration of sparse Matrices ----
+template <class F>
+class MatrixCSC;
+
+
+/// @brief A dense matrix
 template <class F>
 class Matrix {
 public:
@@ -368,7 +400,7 @@ private:
 	static constexpr F zero = make_zero<F>();
 
 public:
-	constexpr Matrix(const std::vector<std::vector<F>> &data) : data(data) {
+	Matrix(const std::vector<std::vector<F>> &data) : data(data) {
 		num_rows = data.size();
 		if (num_rows != 0) {
 			num_cols = data[0].size();
@@ -377,10 +409,10 @@ public:
 			num_cols = 0;
 		}
 	}
-	constexpr Matrix() noexcept : num_rows(0), num_cols(0) {}
-	constexpr Matrix(size_t m, size_t n, const F &value) : data(m, std::vector<F>(n, value)), num_rows(m), num_cols(n) {}
-	constexpr Matrix(size_t m, size_t n) : Matrix(m, n, zero) {}
-	constexpr Matrix(std::initializer_list<std::initializer_list<F>> list) : num_cols(0) {
+	Matrix() noexcept : num_rows(0), num_cols(0) {}
+	Matrix(size_t m, size_t n, const F &value) : data(m, std::vector<F>(n, value)), num_rows(m), num_cols(n) {}
+	Matrix(size_t m, size_t n) : Matrix(m, n, zero) {}
+	Matrix(std::initializer_list<std::initializer_list<F>> list) : num_cols(0) {
 		num_rows = list.size();
 		bool num_cols_set = false;
 		for (const std::initializer_list<F> &row : list) {
@@ -396,11 +428,12 @@ public:
 			}
 		}
 	}
+	Matrix(const MatrixCSC<F> &sparse);
 
-	constexpr Matrix(const Matrix &) = default;
-	constexpr Matrix(Matrix &&) noexcept = default;
-	constexpr Matrix &operator=(const Matrix &) = default;
-	constexpr Matrix &operator=(Matrix &&) noexcept = default;
+	Matrix(const Matrix &) = default;
+	Matrix(Matrix &&) noexcept = default;
+	Matrix &operator=(const Matrix &) = default;
+	Matrix &operator=(Matrix &&) noexcept = default;
 
 	~Matrix() = default;
 
@@ -418,41 +451,41 @@ public:
 	}
 
 
-	constexpr void clear() {
+	void clear() {
 		assign(num_rows, num_cols, zero);
 	}
 
-	constexpr void assign(size_t m, size_t n, const F &value = zero) {
+	void assign(size_t m, size_t n, const F &value = zero) {
 		num_rows = m;
 		num_cols = n;
 		data.assign(m, std::vector<F>(n, value));
 	}
 
-	constexpr F &operator()(size_t row, size_t col) noexcept {
+	F &operator()(size_t row, size_t col) noexcept {
 		return data[row][col];
 	}
 
-	constexpr const F &operator()(size_t row, size_t col) const noexcept {
+	const F &operator()(size_t row, size_t col) const noexcept {
 		return data[row][col];
 	}
 
-	constexpr std::vector<std::vector<F>> &rows() noexcept {
+	std::vector<std::vector<F>> &rows() noexcept {
 		return data;
 	}
 
-	constexpr const std::vector<std::vector<F>> &rows() const noexcept {
+	const std::vector<std::vector<F>> &rows() const noexcept {
 		return data;
 	}
 
-	constexpr size_t m() const noexcept {
+	size_t m() const noexcept {
 		return num_rows;
 	}
 
-	constexpr size_t n() const noexcept {
+	size_t n() const noexcept {
 		return num_cols;
 	}
 
-	constexpr std::string repr() const {
+	std::string repr() const {
 		size_t max_length = 0;
 		for (size_t i = 0; i < num_rows; ++i) {
 			for (size_t j = 0; j < num_cols; ++j) {
@@ -484,20 +517,20 @@ public:
 		return ss.str();
 	}
 
-	constexpr void swap_rows(size_t a, size_t b) noexcept(std::is_nothrow_swappable_v<std::vector<F>>) {
+	void swap_rows(size_t a, size_t b) noexcept(std::is_nothrow_swappable_v<std::vector<F>>) {
 		using std::swap;
 		swap(data[a], data[b]);
 	}
 
-	constexpr bool is_square() const noexcept {
+	bool is_square() const noexcept {
 		return num_rows == num_cols;
 	}
 
-	constexpr bool operator==(const Matrix &other) const {
+	bool operator==(const Matrix &other) const {
 		return data == other.data;
 	}
 
-	constexpr Matrix &operator+=(const Matrix &other) {
+	Matrix &operator+=(const Matrix &other) {
 		if (num_rows != other.num_rows || num_cols != other.num_cols) {
 			throw std::runtime_error("Matrices must be of the same size");
 		}
@@ -511,13 +544,13 @@ public:
 		return *this;
 	}
 
-	constexpr Matrix operator+(const Matrix &other) const {
+	Matrix operator+(const Matrix &other) const {
 		Matrix result(*this);
 		result += other;
 		return result;
 	}
 
-	constexpr Matrix operator*(const Matrix &other) const {
+	Matrix operator*(const Matrix &other) const {
 		if (num_cols != other.num_rows) {
 			throw std::runtime_error("Uncompatible matrices for matrix product");
 		}
@@ -539,7 +572,7 @@ public:
 		return result;
 	}
 
-	constexpr Matrix &operator*=(const F &scalar) {
+	Matrix &operator*=(const F &scalar) {
 		for (size_t i = 0; i < num_rows; ++i) {
 			for (size_t j = 0; j < num_cols; ++j) {
 				(*this)(i, j) *= scalar;
@@ -547,7 +580,7 @@ public:
 		}
 		return *this;
 	}
-	constexpr Matrix &operator/=(const F &scalar) {
+	Matrix &operator/=(const F &scalar) {
 		for (size_t i = 0; i < num_rows; ++i) {
 			for (size_t j = 0; j < num_cols; ++j) {
 				(*this)(i, j) /= scalar;
@@ -556,22 +589,118 @@ public:
 		return *this;
 	}
 
-	constexpr Matrix operator*(const F &scalar) const {
+	Matrix operator*(const F &scalar) const {
 		Matrix temp(*this);
 		temp *= scalar;
 		return temp;
 	}
-	constexpr friend Matrix operator*(const F &scalar, const Matrix &vec) {
+
+	friend Matrix operator*(const F &scalar, const Matrix &vec) {
 		return vec * scalar;
 	}
 
-	constexpr Matrix operator/(const F &scalar) const {
+	Matrix operator/(const F &scalar) const {
 		Matrix temp(*this);
 		temp /= scalar;
 		return temp;
 	}
 };
 
+
+
+/// @brief A sparse matrix in the CSC format
+template <class F>
+class MatrixCSC {
+public:
+	using value_type = F;
+
+private:
+	std::vector<F> data;
+	std::vector<size_t> rows;
+	std::vector<size_t> ptrs;
+
+	size_t num_rows;
+	size_t num_cols;
+
+	static constexpr F zero = make_zero<F>();
+
+	// static ThreadPool &get_thread_pool();
+
+public:
+	MatrixCSC(size_t m, size_t n) noexcept : num_rows(m), num_cols(n) {}
+	MatrixCSC() noexcept : MatrixCSC(0, 0) {}
+
+	MatrixCSC(const Matrix<F> &matrix) : MatrixCSC(matrix.m(), matrix.n()) {
+		ptrs.push_back(0);
+
+		for (size_t j = 0; j < matrix.n(); ++j) {
+			for (size_t i = 0; i < matrix.m(); ++i) {
+				F value = matrix(i, j);
+				if (is_zero(value)) continue;
+
+				data.push_back(value);
+				rows.push_back(i);
+			}
+			ptrs.push_back(data.size());
+		}
+	}
+
+	MatrixCSC(const std::vector<std::vector<F>> &data) : MatrixCSC(Matrix<F>(data)) {}
+	MatrixCSC(std::initializer_list<std::initializer_list<F>> list) : MatrixCSC(Matrix<F>(list)) {};
+
+	MatrixCSC(const MatrixCSC &) = delete;
+	MatrixCSC &operator=(const MatrixCSC &) = delete;
+
+	MatrixCSC(MatrixCSC &&other) noexcept : MatrixCSC(other.m(), other.n()) {
+		data = std::move(other.data);
+		rows = std::move(other.rows);
+		ptrs = std::move(other.ptrs);
+
+		other.num_rows = 0;
+		other.num_cols = 0;
+	}
+	MatrixCSC &operator=(MatrixCSC &&other) noexcept {
+		data = std::move(other.data);
+		rows = std::move(other.rows);
+		ptrs = std::move(other.ptrs);
+
+		num_rows = other.num_rows;
+		other.num_rows = 0;
+		num_cols = other.num_cols;
+		other.num_cols = 0;
+
+		return *this;
+	}
+
+	~MatrixCSC() = default;
+
+	// ---- sizes ----
+
+	size_t m() const noexcept { return num_rows; }
+	size_t n() const noexcept { return num_cols; }
+	size_t nnz() const noexcept { return data.size(); }
+
+	// ---- value getters ----
+
+	size_t col_begin(size_t col) const noexcept { return ptrs[col]; }
+	size_t col_end(size_t col) const noexcept { return ptrs[col]; }
+	size_t row(size_t index) const noexcept { return rows[index]; }
+	F elem(size_t index) const noexcept { return data[index]; }
+};
+
+// ---- Desparsification ----
+
+template <class F>
+Matrix<F>::Matrix(const MatrixCSC<F> &sparse) : Matrix(sparse.m(), sparse.n(), zero) {
+	for (size_t j = 0; j < sparse.n(); ++j) {
+		for (size_t i = sparse.col_begin(j); i < sparse.col_end(j); ++i) {
+			size_t row = sparse.row(i);
+			data[row][j] = sparse.elem(i);
+		}
+	}
+}
+
+// ---- Vector Matrix Operations ----
 
 template <class F>
 Vector<F> operator*(const Matrix<F> &matrix, const Vector<F> &vector) {
@@ -611,6 +740,8 @@ Vector<F> operator*(const Vector<F> &vector, const Matrix<F> &matrix) {
 	return result;
 }
 
+
+// ==== Solving Algorithms ====
 
 class singular_matrix_exception : public std::runtime_error {
 public:

@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "../lingebra/lingebra.h"
+#include "../lingebra.h"
 #include "pin.h"
 #include "scalar.h"
 

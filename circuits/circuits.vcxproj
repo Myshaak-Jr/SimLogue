@@ -147,6 +147,7 @@
     <ClCompile Include="src\circuit\util.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\settings.cpp" />
+    <ClCompile Include="src\thread_pool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\circuit\circuit.h" />
@@ -162,7 +163,8 @@
     <ClInclude Include="src\circuit\scalar.h" />
     <ClInclude Include="src\circuit\parts\voltage_source.h" />
     <ClInclude Include="src\circuit\util.h" />
-    <ClInclude Include="src\lingebra\lingebra.h" />
+    <ClInclude Include="src\lingebra.h" />
+    <ClInclude Include="src\thread_pool.h" />
     <ClInclude Include="src\settings.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

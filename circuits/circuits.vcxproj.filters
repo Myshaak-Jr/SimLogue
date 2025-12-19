@@ -51,6 +51,9 @@
     <ClCompile Include="src\settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\thread_pool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\circuit\node.h">
@@ -69,9 +72,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\circuit\circuit_matrix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lingebra\lingebra.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\circuit\pin.h">
@@ -96,6 +96,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lingebra.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thread_pool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

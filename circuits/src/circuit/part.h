@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <tuple>
+#include <vector>
 
 #include "circuit_matrix.h"
 #include "node.h"
@@ -26,14 +28,16 @@ public:
 	virtual Pin pin(size_t pin_id) = 0;
 	virtual ConstPin pin(size_t pin_id) const = 0;
 
-	virtual void pre_stamp(CircuitMatrix &matrix, const StampParams &params) {}
-	virtual void stamp(CircuitMatrix &matrix, const StampParams &params) const = 0;
-	virtual void post_stamp(const CircuitMatrix &matrix, const StampParams &params) {};
+	virtual size_t num_needed_matrix_rows() const { return 0; };
+	virtual void set_first_matrix_row_id(size_t first_row_id) {}
+
+	virtual std::vector<std::tuple<size_t, size_t, scalar>> gen_matrix_entries(scalar timestep) const = 0;
 
 	virtual const std::string &get_name() const = 0;
 	virtual void set_name(const std::string &name) = 0;
 
 	virtual scalar get_current_between(const ConstPin &a, const ConstPin &b) const = 0;
 
-	virtual bool requires_matrix_row() const = 0;
+	// i in range 0 .. num_needed_matrix_rows() - 1
+	virtual void update_value_from_result(size_t i, scalar value) {}
 };

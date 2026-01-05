@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <iostream>
 #include <memory>
+#include <tuple>
 #include <utility>
 
 
@@ -89,7 +90,68 @@ void Circuit::update_parts() {
 	}
 }
 
+lingebra::MatrixCSC<scalar> Circuit::build_matrix() const {
+	// reserve rows
+	size_t num_rows = 0;
+
+	for (auto &node : nodes) {
+		node->node_id = num_rows++;
+	}
+
+	for (auto &part : parts) {
+		part->set_first_matrix_row_id(num_rows);
+		num_rows += part->num_needed_matrix_rows();
+	}
+
+	// [(row, column, data), ...]
+	std::vector<std::tuple<size_t, size_t, scalar>> matrix_entries;
+
+	for (const auto &part : parts) {
+		matrix_entries.append_range(part->gen_matrix_entries());
+	}
+
+	matrix_entries = std::move(counting_sort(matrix_entries, num_rows, [](const auto &a, const auto &b) {return std::get<0>(a) < std::get<0>(b); }));
+	matrix_entries = std::move(counting_sort(matrix_entries, num_rows, [](const auto &a, const auto &b) {return std::get<1>(a) < std::get<1>(b); }));
+
+	std::vector<scalar> data;
+	std::vector<size_t> rows, ptrs;
+
+	size_t last_col = 0, last_row = 0;
+	ptrs.push_back(0);
+
+	for (const auto &[row, col, datum] : matrix_entries) {
+		if (col == last_col && row == last_row) {
+			data[data.size() - 1] += datum;
+		}
+		else {
+			data.push_back(datum);
+			rows.push_back(row);
+		}
+
+		if (col != last_col) {
+			ptrs.push_back(data.size());
+		}
+
+		last_row = row;
+		last_col = col;
+	}
+
+	return lingebra::MatrixCSC<scalar>(num_rows, num_rows, std::move(data), std::move(rows), std::move(ptrs));
+}
+
+void Circuit::update() {
+
+}
+
 void Circuit::run_for_steps(size_t num_steps) {
+	auto matrix = build_matrix();
+
+	// pivot
+	std::tie(row_swap, col_swap) = lingebra::generate_pivoting(matrix);
+	lingebra::reorder_rows(matrix, row_swap);
+	lingebra::reorder_cols(matrix, col_swap);
+
+
 	std::cout << "Running for " << num_steps << " steps\n";
 
 	size_t step = 0;
@@ -97,21 +159,30 @@ void Circuit::run_for_steps(size_t num_steps) {
 
 	try {
 		for (; step < num_steps; ++step) {
-			update_parts();
-
-			for (const auto &scope : voltage_scopes) {
-				scope->record_voltage(t);
-			}
-			for (const auto &scope : current_scopes) {
-				scope->record_current(t);
-			}
-
-			t += timestep;
+			update();
 		}
 	}
 	catch (const lingebra::singular_matrix_exception &) {
 		std::cout << "Singular matrix encountered at time=" << t << "(step=" << step << ")\n";
 	}
+
+	//try {
+	//	for (; step < num_steps; ++step) {
+	//		update_parts();
+
+	//		for (const auto &scope : voltage_scopes) {
+	//			scope->record_voltage(t);
+	//		}
+	//		for (const auto &scope : current_scopes) {
+	//			scope->record_current(t);
+	//		}
+
+	//		t += timestep;
+	//	}
+	//}
+	//catch (const lingebra::singular_matrix_exception &) {
+	//	std::cout << "Singular matrix encountered at time=" << t << "(step=" << step << ")\n";
+	//}
 }
 
 void Circuit::run_for_seconds(scalar secs) {

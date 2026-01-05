@@ -5,8 +5,24 @@ Resistor::Resistor(const std::string &name, scalar ohms) : NPinPart<2>(name), oh
 	conductance = 1.0f / ohms;
 }
 
-void Resistor::stamp(CircuitMatrix &matrix, const StampParams &params) const {
-	matrix.stamp_template_LHS(pin(0), pin(1), conductance);
+std::vector<std::tuple<size_t, size_t, scalar>> Resistor::gen_matrix_entries(scalar timestep) const {
+	const auto &node0 = pin(0).node;
+	const auto &node1 = pin(1).node;
+
+	std::vector<std::tuple<size_t, size_t, scalar>> entries;
+
+	if (!node0->is_ground && !node1->is_ground) {
+		entries.push_back({ node0->node_id, node0->node_id, conductance });
+		entries.push_back({ node0->node_id, node1->node_id, -conductance });
+		entries.push_back({ node1->node_id, node0->node_id, -conductance });
+		entries.push_back({ node1->node_id, node1->node_id, conductance });
+	}
+	else if (!node0->is_ground) {
+		entries.push_back({ node0->node_id, node0->node_id, conductance });
+	}
+	else if (!node1->is_ground) {
+		entries.push_back({ node1->node_id, node1->node_id, conductance });
+	}
 }
 
 scalar Resistor::get_current_between(const ConstPin &a, const ConstPin &b) const {

@@ -17,9 +17,7 @@ public:
 	Resistor(const std::string &name, scalar ohms);
 	~Resistor() noexcept = default;
 
-	void stamp(CircuitMatrix &matrix, const StampParams &params) const override;
+	std::vector<std::tuple<size_t, size_t, scalar>> gen_matrix_entries(scalar timestep) const override;
 
 	scalar get_current_between(const ConstPin &a, const ConstPin &b) const override;
-
-	constexpr bool requires_matrix_row() const override { return false; }
 };

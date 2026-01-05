@@ -12,8 +12,7 @@ size_t CircuitMatrix::reserve_row() {
 }
 
 void CircuitMatrix::init() {
-	matrix.assign(num_rows, num_rows);
-	rhs.assign(num_rows);
+
 }
 
 void CircuitMatrix::stamp_template_I_out_LHS(const ConstPin &a, const ConstPin &b, size_t branch_id, scalar g_like_value, scalar cross_value) {

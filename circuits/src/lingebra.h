@@ -9,10 +9,12 @@
 #include <iostream>
 #include <iterator>
 #include <limits>
+#include <list>
 #include <random>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 #include <type_traits>
 #include <vector>
 
@@ -35,7 +37,9 @@ constexpr T abs(const T &x) { return T::abs(x); }
 
 // ==== Prime Value Checker ====
 
-// runs in $\mathcal{O}(\log n)$
+/// @brief determines whether n is a prime.
+/// 
+/// Possibly at compile time, runs in O(log n)
 constexpr bool is_prime(size_t n) noexcept {
 	if (n < 2) return false;
 	for (size_t i = 2; i * i <= n; ++i) {
@@ -386,7 +390,6 @@ public:
 template <class F>
 class MatrixCSC;
 
-
 /// @brief A dense matrix
 template <class F>
 class Matrix {
@@ -607,7 +610,6 @@ public:
 };
 
 
-
 /// @brief A sparse matrix in the CSC format
 template <class F>
 class MatrixCSC {
@@ -647,6 +649,22 @@ public:
 
 	MatrixCSC(const std::vector<std::vector<F>> &data) : MatrixCSC(Matrix<F>(data)) {}
 	MatrixCSC(std::initializer_list<std::initializer_list<F>> list) : MatrixCSC(Matrix<F>(list)) {};
+
+	MatrixCSC(size_t m, size_t n, const std::vector<F> &data, const std::vector<size_t> &rows, const std::vector<size_t> &ptrs) :
+		MatrixCSC(m, n),
+		data(data),
+		rows(rows),
+		ptrs(ptrs) {
+	}
+
+	MatrixCSC(size_t m, size_t n, std::vector<F> &&data, std::vector<size_t> &&rows, std::vector<size_t> &&ptrs) :
+		MatrixCSC(m, n),
+		data(std::move(data)),
+		rows(std::move(rows)),
+		ptrs(std::move(ptrs)) {
+	}
+
+
 
 	MatrixCSC(const MatrixCSC &) = delete;
 	MatrixCSC &operator=(const MatrixCSC &) = delete;
@@ -748,6 +766,23 @@ public:
 	explicit singular_matrix_exception() : runtime_error("The matrix is singular!") {}
 };
 
+// ---- Sparse LU decomposition ----
+
+/// @brief Decomposes the sparse matrix into two sparse L,U matrices
+/// 
+/// Uses the GE/LU algorithm, and Markowitz Pivoting
+/// Taken from the book: Circuit Simulation (Farid N. Najm) 
+/// 
+/// @tparam F The field
+/// @param matrix The matrix to be decomposed
+/// @return Tuple of L, U respectively
+template <class F>
+std::tuple<MatrixCSC<F>, MatrixCSC<F>> LU_decompose(MatrixCSC<F> &matrix) {
+
+}
+
+
+// ---- GE on dense matrices ----
 /* Solves the system Ax = b using the gaussian elimination */
 template <class F>
 void solve_gaussian_elimination(Matrix<F> &matrix, Vector<F> &b) {

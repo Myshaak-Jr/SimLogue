@@ -18,11 +18,12 @@ public:
 	Inductor(const std::string &name, scalar inductance);
 	~Inductor() noexcept = default;
 
-	void pre_stamp(CircuitMatrix &matrix, const StampParams &params) override;
-	void stamp(CircuitMatrix &matrix, const StampParams &params) const override;
-	void post_stamp(const CircuitMatrix &matrix, const StampParams &params) override;
+	size_t num_needed_matrix_rows() const override { return 1; }
+	void set_first_matrix_row_id(size_t row_id) override { branch_id = row_id; }
+
+	std::vector<std::tuple<size_t, size_t, scalar>> gen_matrix_entries(scalar timestep) const override;
 
 	scalar get_current_between(const ConstPin &a, const ConstPin &b) const override;
 
-	constexpr bool requires_matrix_row() const override { return true; }
+	void update_value_from_result(size_t i, scalar value) override { last_i = value; }
 };

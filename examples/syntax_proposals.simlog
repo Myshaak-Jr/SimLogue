@@ -1,8 +1,5 @@
 // this wont work, a bunch of TODOs to make the simlog files easier to write
 
-
-voltage_source V1: 5_V // ignore all "_" when parsing values
-
 // === part multideclaration ===
 resistor R{1-5}: 10kOhm
 resistor R{17-18,23}: 20kOhm
@@ -11,7 +8,7 @@ ac_voltage_source AC_V1: 35Hz, 5V; AC_V2: 68Hz, 8V // maybe even something like 
 
 // === parallel shortcut ===
 
-V1 - R1 - (R2 | R3 - R4) - GND
+V1 - R1 - ( R2 | R3 - R4 ) - GND
 
 // equivalent to:
 V1 - R1 - R2 - GND

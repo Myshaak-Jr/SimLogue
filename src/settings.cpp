@@ -1,6 +1,8 @@
 #include "settings.h"
 
 #include "circuit/interpreter/interpreter.h"
+#include "version.h"
+
 #include <filesystem>
 #include <iostream>
 #include <string>
@@ -9,9 +11,9 @@
 static void print_help() {
 	std::cout
 		<< "SimLogue: An Analogue Circiut Simulator\n"
-		<< "Version: " << APP_VERSION_MAJOR << "."
-		<< APP_VERSION_MINOR << "."
-		<< APP_VERSION_PATCH << "\n\n"
+		<< "Version: " << simlogue::version::major << "."
+		<< simlogue::version::minor << "."
+		<< simlogue::version::patch << "\n\n"
 
 		<< "Usage:\n"
 		<< "  simlogue [options] circuit_file duration\n\n"
@@ -32,7 +34,7 @@ static void print_help() {
 }
 
 static void print_version() {
-	std::cout << "Version: " << APP_VERSION_MAJOR << "." << APP_VERSION_MINOR << "." << APP_VERSION_PATCH << "\n";
+	std::cout << "Version: " << simlogue::version::major << "." << simlogue::version::minor << "." << simlogue::version::patch << "\n";
 }
 
 Settings handle_args(int argc, char *argv[]) {

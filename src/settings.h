@@ -1,12 +1,9 @@
 #pragma once
 
 #include "circuit/scalar.h"
+
 #include <filesystem>
 
-
-constexpr int APP_VERSION_MAJOR = 0;
-constexpr int APP_VERSION_MINOR = 2;
-constexpr int APP_VERSION_PATCH = 2;
 
 namespace fs = std::filesystem;
 

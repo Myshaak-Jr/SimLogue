@@ -1,9 +1,9 @@
 #include "settings.h"
 
+#include "circuit/interpreter/interpreter.h"
 #include <filesystem>
 #include <iostream>
 #include <string>
-
 
 
 static void print_help() {
@@ -17,7 +17,7 @@ static void print_help() {
 		<< "  simlogue [options] circuit_file duration\n\n"
 
 		<< "  circuit_file       .simlog file to load the circuit from\n"
-		<< "  duration           floating point value in second\n\n"
+		<< "  duration           Time value (see readme) specifying the run time\n\n"
 
 		<< "Options:\n"
 		<< "  -t, --tables     <path>   Path to generated CSV tables\n"
@@ -97,14 +97,20 @@ Settings handle_args(int argc, char *argv[]) {
 			}
 			else if (pos_idx == 1) {
 				try {
-					settings.duration = std::stof(argv[i]);
+					auto [quantity, duration] = Interpreter::parse_value(argv[i], "in param duration");
+
+					if (quantity != Quantity::Time) {
+						throw ParseError("Value error in param duration: Duration has to be a time value.");
+					}
+
+					settings.duration = duration;
 				}
-				catch (const std::exception &) {
-					std::cout << "Argument duration must be a floating point number in valid range.\nSee help:\n\n";
+				catch (const std::exception &e) {
+					std::cout << e.what() << "\nSee help: \n\n";
 					print_help();
 					return Settings{ .exit = true, .exit_code = 2 };
 				}
-				if (settings.duration <= 0.0) {
+				if (settings.duration <= 0.0) { // for now the parse_value doesn't even support negatives, but just in case :D
 					std::cout << "Argument duration must be positive.\n";
 					print_help();
 					return Settings{ .exit = true, .exit_code = 2 };

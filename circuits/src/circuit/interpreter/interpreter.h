@@ -32,8 +32,6 @@ private:
 		scalar value = 0.0;
 	};
 
-	static Value parse_value(std::string_view value_string, size_t line_idx);
-
 	Part *parse_part(const std::string &partname, size_t line_idx) const;
 	Pin parse_pin(const std::string &pinname, size_t line_idx, bool support_twopin = false, size_t twopin_part_pin_id = 0) const;
 	void parse_connections(const std::vector<std::string_view> &tokens, size_t line_idx) const;
@@ -62,8 +60,12 @@ private:
 	}
 
 public:
-
 	Interpreter(Circuit &circuit);
+
+	static Value parse_value(std::string_view value_string, std::string_view where);
+	static Value parse_value(std::string_view value_string, size_t line_idx) {
+		return parse_value(value_string, std::format("on line {}", line_idx));
+	}
 
 	void set_ground();
 

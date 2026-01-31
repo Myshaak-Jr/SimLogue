@@ -1,12 +1,27 @@
 // Taken from Circuit Js
-// run for around 150-200 ms
+// run for around 1000 ms
 
 ac_voltage_source V1: 35Hz, 5V
 ac_voltage_source V2: 41.1Hz, 5V
-ac_voltage_source V2: 45Hz, 5V
+ac_voltage_source V3: 45Hz, 5V
 
 resistor R1: 10Ω
 resistor R2: 10Ω
 resistor R3: 10Ω
 
 capacitor C1: 15μF
+capacitor C2: 15μF
+capacitor C3: 15μF
+
+inductor L1: 1H
+inductor L2: 1H
+inductor L3: 1H
+
+V1-R1-C1-L1-GND
+V2-R2-C2-L2-GND
+V3-R3-C3-L3-GND
+
+
+scope voltage of C1
+scope voltage of C2
+scope voltage of C3

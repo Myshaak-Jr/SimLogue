@@ -83,7 +83,7 @@ Pin Interpreter::parse_pin(const std::string &pinname, size_t line_idx, bool sup
 }
 
 
-Interpreter::Value Interpreter::parse_value(std::string_view value_string, size_t line_idx) {
+Interpreter::Value Interpreter::parse_value(std::string_view value_string, std::string_view line_idx) {
 	std::string number_string = "";
 	number_string.reserve(value_string.size());
 
@@ -98,7 +98,7 @@ Interpreter::Value Interpreter::parse_value(std::string_view value_string, size_
 	scalar value;
 	auto [ptr, ec] = std::from_chars(number_string.data(), number_string.data() + number_string.size(), value);
 	if (ec != std::errc()) {
-		throw ParseError(std::format("Syntax error on line {}: Invalid number '{}'.", line_idx, number_string));
+		throw ParseError(std::format("Syntax error {}: Invalid number '{}'.", line_idx, number_string));
 	}
 
 	auto unit_token = value_string.substr(i);
@@ -114,7 +114,7 @@ Interpreter::Value Interpreter::parse_value(std::string_view value_string, size_
 	std::string_view unit_string;
 
 	if (underscore_pos == unit_token.size() - 1) {
-		throw ParseError(std::format("Syntax error on line {}: Invalid unit '{}'.", line_idx, unit_token));
+		throw ParseError(std::format("Syntax error {}: Invalid unit '{}'.", line_idx, unit_token));
 	}
 
 	if (underscore_pos == unit_token.size()) {
@@ -129,8 +129,15 @@ Interpreter::Value Interpreter::parse_value(std::string_view value_string, size_
 
 		// the unit as a whole isn't valid, so we will try using the first letter as a multiplier
 
-		unit_mult = unit_token.substr(0, 1);
-		unit_string = unit_token.substr(1);
+		// I hate encodings
+		if (unit_token.starts_with("μ")) {
+			unit_mult = unit_token.substr(0, 2);
+			unit_string = unit_token.substr(2);
+		}
+		else {
+			unit_mult = unit_token.substr(0, 1);
+			unit_string = unit_token.substr(1);
+		}
 	}
 	else {
 		unit_mult = unit_token.substr(0, underscore_pos);
@@ -139,7 +146,7 @@ Interpreter::Value Interpreter::parse_value(std::string_view value_string, size_
 
 	auto unit_info = unit_to_quantity(unit_string);
 	if (!unit_info) {
-		throw ParseError(std::format("Syntax error on line {}: Invalid unit '{}'.", line_idx, unit_token));
+		throw ParseError(std::format("Syntax error {}: Invalid unit '{}'.", line_idx, unit_token));
 	}
 
 	auto [quantity, ratio] = *unit_info;
@@ -160,7 +167,7 @@ Interpreter::Value Interpreter::parse_value(std::string_view value_string, size_
 	else if (unit_mult == "p") value *= 1e-12;
 	else if (unit_mult == "f") value *= 1e-15;
 	else if (unit_mult == "a") value *= 1e-18;
-	else throw ParseError(std::format("Syntax error on line {}: Invalid unit '{}'.", line_idx, unit_token));
+	else throw ParseError(std::format("Syntax error {}: Invalid unit '{}'.", line_idx, unit_token));
 
 	return { quantity, value };
 }

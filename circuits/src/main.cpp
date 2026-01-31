@@ -3,13 +3,12 @@
 #include "settings.h"
 
 #include "circuit/circuit.h"
-#include "circuit/interpreter.h"
+#include "circuit/interpreter/interpreter.h"
 #include "circuit/parts/capacitor.h"
 #include "circuit/parts/resistor.h"
 #include "circuit/parts/switch.h"
 #include "circuit/parts/voltage_source.h"
 #include "circuit/scalar.h"
-
 
 
 int main(int argc, char *argv[]) {
@@ -25,6 +24,7 @@ int main(int argc, char *argv[]) {
 	}
 	catch (const std::exception &e) {
 		std::cerr << e.what() << "\n";
+		return 1;
 	}
 
 	circuit.run_for_seconds(settings.duration);

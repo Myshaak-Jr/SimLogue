@@ -34,12 +34,11 @@ A simple scripting language to build the circuits.
 #### Features:
 
 **Comments:**
-Comment using C-style comments `// this will be commented`
-Comments using `/* ... */` aren't supported yet
+Comment using C-style comments `// this will be commented`, `/* this is comment */`
 
 **Components:**
 Create a new component by writing:
-`<component> <name>[: <value>]`
+`<component> <name>[: <value> ...]`
 
 **List of available components:**
 - `capacitor`
@@ -55,19 +54,26 @@ All names must be in the format: `[A-Za-z_][A-Za-z0-9_]*`
 Examples: `V1`, `R5`, `VSource_25V`
 
 Values:
-All values consist of a value and a unit, like `5V`, `6.3mAm`, `68uF`, etc.
-The cannot be a space between the value and the unit.
-The unit must correspond to the parts quantity
+All values consist of a value and a unit, like `5V`, `6.3m_Am`, `68_uF`, etc.
+The cannot be a space between the value and the unit, you can use an underscore.
 
 **Units:**
-- Current - Am
+- Current - A, Am
 - Voltage - V
-- Resistance - Ohm
+- Resistance - Ohm, Ω
 - Capacitance - F
 - Inductance - H
-- Time - s
+- Time - s, min
+- Frequency - Hz
+- Angle - rad, deg, grad, °
 
 You can use multipliers like `E, P, T, G, M, k, m, u, n, p, f, a` between the value and unit.
+
+When using mutlipliers you can put '_' between them and the unit itself for readability: `k_Ohm` or in the future when for example units of length get added to differentiate between milli inches and minutes: `m_in` vs `min`.
+
+That being said, when no underscore is present in the unit name, the parser will first try to parse as a whole unit name, and if it fails to do so it will proceed to parse the first letter as a multiplier. 
+
+Units such as `mdeg` or `Grad` (giga radian) are technically supported although not recommended, `Grad` can be especially confusing with `grad` being a real unit. 
 
 **Connections:**
 Parts can be connected by simply writing: `V1 - R1`

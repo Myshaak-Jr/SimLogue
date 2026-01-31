@@ -33,7 +33,7 @@ private:
 	Node *create_new_node();
 
 	lingebra::Matrix<scalar> build_matrix(const StampParams &params) const;
-	void update(size_t step);
+	void update(size_t step, scalar t);
 
 	std::unique_ptr<class Interpreter> interpreter;
 

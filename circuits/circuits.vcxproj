@@ -139,8 +139,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\circuit\circuit.cpp" />
-    <ClCompile Include="src\circuit\interpreter.cpp" />
+    <ClCompile Include="src\circuit\interpreter\interpreter.cpp" />
     <ClCompile Include="src\circuit\n_pin_part.h" />
+    <ClCompile Include="src\circuit\parts\ac_voltage_source.cpp" />
     <ClCompile Include="src\circuit\parts\capacitor.cpp" />
     <ClCompile Include="src\circuit\parts\current_source.cpp" />
     <ClCompile Include="src\circuit\parts\inductor.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="src\circuit\circuit.h" />
     <ClInclude Include="src\circuit\node.h" />
     <ClInclude Include="src\circuit\part.h" />
+    <ClInclude Include="src\circuit\parts\ac_voltage_source.h" />
     <ClInclude Include="src\circuit\parts\capacitor.h" />
     <ClInclude Include="src\circuit\parts\current_source.h" />
     <ClInclude Include="src\circuit\parts\inductor.h" />
@@ -203,10 +205,11 @@
     <ClInclude Include="src\circuit\parts\switch.h" />
     <ClInclude Include="src\circuit\pin.h" />
     <ClInclude Include="src\circuit\parts\resistor.h" />
+    <ClInclude Include="src\circuit\interpreter\quantity.h" />
     <ClInclude Include="src\circuit\scope.h" />
     <ClInclude Include="src\circuit\scalar.h" />
     <ClInclude Include="src\circuit\parts\voltage_source.h" />
-    <ClInclude Include="src\circuit\interpreter.h" />
+    <ClInclude Include="src\circuit\interpreter\interpreter.h" />
     <ClInclude Include="src\circuit\util.h" />
     <ClInclude Include="src\lingebra\lingebra.h" />
     <ClInclude Include="src\settings.h" />

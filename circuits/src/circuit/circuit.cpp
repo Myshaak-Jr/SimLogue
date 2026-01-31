@@ -1,6 +1,6 @@
 #include "../lingebra/lingebra.h"
 #include "circuit.h"
-#include "interpreter.h"
+#include "interpreter/interpreter.h"
 #include "node.h"
 #include "part.h"
 #include "parts/voltage_source.h"
@@ -91,12 +91,13 @@ lingebra::Matrix<scalar> Circuit::build_matrix(const StampParams &params) const 
 	return matrix;
 }
 
-void Circuit::update(size_t step) {
+void Circuit::update(size_t step, scalar t) {
 	StampParams params{
 		.ground = ground->pin(),
 		.timestep = timestep,
 		.timestep_inv = 1.0 / timestep,
-		.step = step
+		.step = step,
+		.time = t,
 	};
 
 	// TODO: update the matrix instead of building it anew
@@ -139,7 +140,7 @@ void Circuit::run_for_steps(size_t num_steps) {
 
 	try {
 		for (; step < num_steps; ++step) {
-			update(step);
+			update(step, t);
 
 			for (const auto &scope : scopes) {
 				scope->record(t);
@@ -203,6 +204,7 @@ void Circuit::show_graphs() const {
 
 void Circuit::load_circuit(const fs::path &script) {
 	std::ifstream f(script);
+	f.imbue(std::locale(".UTF-8")); // this way the ° and Ω should be read correctly
 
 	if (!f) {
 		throw std::runtime_error("Cannot open script file: " + script.string());

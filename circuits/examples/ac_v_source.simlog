@@ -1,0 +1,11 @@
+ac_voltage_source V1: 60Hz, 5V
+ac_voltage_source V2: 10V, 30Hz
+
+resistor R1: 10kOhm
+resistor R2: 10kOhm
+
+V1 - R1 - GND
+V2 - R2 - GND
+
+scope voltage of R1
+scope voltage of R2

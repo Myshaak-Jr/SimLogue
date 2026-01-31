@@ -15,13 +15,6 @@ std::vector<std::tuple<size_t, size_t, scalar>> VoltageSource::gen_matrix_entrie
 }
 
 scalar VoltageSource::get_current_between(const ConstPin &a, const ConstPin &b) const {
-	if (a.owner != this) {
-		throw std::runtime_error("Pin a must belong to this part.");
-	}
-	else if (!b.node->is_ground) {
-		throw std::runtime_error("Pin b must be a ground pin.");
-	}
-
 	return current;
 }
 
@@ -62,9 +55,6 @@ void VoltageSource2Pin::stamp_rhs_entries(std::vector<scalar> &rhs, const StampP
 }
 
 scalar VoltageSource2Pin::get_current_between(const ConstPin &a, const ConstPin &b) const {
-	if (a.owner != this || b.owner != this) {
-		throw std::runtime_error("Pins a and b must belong to this part.");
-	}
 	return current;
 }
 

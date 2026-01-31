@@ -14,6 +14,7 @@ struct StampParams {
 	scalar timestep;
 	scalar timestep_inv;
 	size_t step;
+	scalar time;
 };
 
 

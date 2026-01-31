@@ -1,8 +1,9 @@
 // parts
 voltage_source V1: 5V
-switch S1
-resistor R1: 100kOhm
-capacitor C1: 10uF
+
+switch     S1
+resistor   R1: 100_kOhm
+capacitor  C1: 10_uF
 
 // connections
 V1 - S1 - R1 - C1 - GND

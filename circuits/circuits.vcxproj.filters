@@ -51,7 +51,10 @@
     <ClCompile Include="src\circuit\parts\switch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\circuit\interpreter.cpp">
+    <ClCompile Include="src\circuit\interpreter\interpreter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\circuit\parts\ac_voltage_source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -224,7 +227,13 @@
     <ClInclude Include="libs\include\sciplot\Utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\circuit\interpreter.h">
+    <ClInclude Include="src\circuit\interpreter\interpreter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\circuit\parts\ac_voltage_source.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\circuit\interpreter\quantity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

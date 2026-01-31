@@ -1,3 +1,13 @@
+/* This file should demonstrate how
+ * the switch works
+ *
+ * Since it is implemented using a variable
+ * resistor, there will sadly always be
+ * current leaking.
+ *
+ * I recommend running this for > 1s
+ */
+
 // parts
 voltage_source V1: 5V
 

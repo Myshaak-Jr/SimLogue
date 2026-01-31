@@ -7,6 +7,7 @@ voltage_source V1: 5_V // ignore all "_" when parsing values
 resistor R{1-5}: 10kOhm
 resistor R{17-18,23}: 20kOhm
 
+ac_voltage_source AC_V1: 35Hz, 5V; AC_V2: 68Hz, 8V // maybe even something like this
 
 // === parallel shortcut ===
 

@@ -1,0 +1,12 @@
+// Taken from Circuit Js
+// run for around 150-200 ms
+
+ac_voltage_source V1: 35Hz, 5V
+ac_voltage_source V2: 41.1Hz, 5V
+ac_voltage_source V2: 45Hz, 5V
+
+resistor R1: 10Ω
+resistor R2: 10Ω
+resistor R3: 10Ω
+
+capacitor C1: 15μF

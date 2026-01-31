@@ -155,6 +155,7 @@ Interpreter::Value Interpreter::parse_value(std::string_view value_string, size_
 	else if (unit_mult == "");
 	else if (unit_mult == "m") value *= 1e-3;
 	else if (unit_mult == "u") value *= 1e-6;
+	else if (unit_mult == "μ") value *= 1e-6;
 	else if (unit_mult == "n") value *= 1e-9;
 	else if (unit_mult == "p") value *= 1e-12;
 	else if (unit_mult == "f") value *= 1e-15;

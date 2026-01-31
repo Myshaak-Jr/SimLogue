@@ -11,7 +11,7 @@ constexpr int APP_VERSION_PATCH = 2;
 namespace fs = std::filesystem;
 
 struct Settings {
-	scalar duration;
+	scalar duration = 0.0;
 	bool exit = false;
 	int exit_code = 0;
 	fs::path tables_path = fs::path("./tables/");

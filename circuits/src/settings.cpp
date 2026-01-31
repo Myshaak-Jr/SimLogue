@@ -17,7 +17,7 @@ static void print_help() {
 		<< "  simlogue [options] circuit_file duration\n\n"
 
 		<< "  circuit_file       .simlog file to load the circuit from\n"
-		<< "  circuit_file       floating point value in second\n\n"
+		<< "  duration           floating point value in second\n\n"
 
 		<< "Options:\n"
 		<< "  -t, --tables     <path>   Path to generated CSV tables\n"
@@ -27,7 +27,7 @@ static void print_help() {
 		<< "  -r, --samplerate <freq>   Sets the samplerate in Hz\n"
 		<< "                            (default: 44100)\n"
 		<< "  -e, --export-tables       Exports the scope tables\n"
-		<< "  -g, --show-graphs         Displays the scope graphs after run\n"
+		<< "  -g, --show-graphs         Displays the scope graphs after run\n\n"
 		;
 }
 
@@ -42,6 +42,8 @@ Settings handle_args(int argc, char *argv[]) {
 	bool do_print_version = false;
 
 	bool accept_options = true;
+
+	bool read_duration = false;
 
 	size_t pos_idx = 0;
 
@@ -107,6 +109,7 @@ Settings handle_args(int argc, char *argv[]) {
 					print_help();
 					return Settings{ .exit = true, .exit_code = 2 };
 				}
+				read_duration = true;
 			}
 			else {
 				std::cout << "SimLogue accepts just 2 positional argument.\nSee help:\n\n";
@@ -118,12 +121,6 @@ Settings handle_args(int argc, char *argv[]) {
 		}
 	}
 
-	if (settings.circuit_path == "") {
-		std::cout << "SimLogue requires the circuit file path.\nSee help:\n\n";
-		print_help();
-		return Settings{ .exit = true, .exit_code = 2 };
-	}
-
 	if (do_print_help) {
 		print_help();
 		return Settings{ .exit = true, .exit_code = 0 };
@@ -131,6 +128,17 @@ Settings handle_args(int argc, char *argv[]) {
 	if (do_print_version) {
 		print_version();
 		return Settings{ .exit = true, .exit_code = 0 };
+	}
+
+	if (settings.circuit_path == "") {
+		std::cout << "SimLogue requires the circuit file path.\nSee help:\n\n";
+		print_help();
+		return Settings{ .exit = true, .exit_code = 2 };
+	}
+	if (!read_duration) {
+		std::cout << "SimLogue requires the duration.\nSee help:\n\n";
+		print_help();
+		return Settings{ .exit = true, .exit_code = 2 };
 	}
 
 	return settings;

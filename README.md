@@ -29,6 +29,15 @@ Options:
 - You need to have [gnuplot](http://gnuplot.info/) installed to render the graphs
 
 ---
+### Build (CMake)
+```sh
+cmake -S . -B build
+cmake --build build
+```
+
+The resulting executable is named `simlogue` in the build output directory.
+
+---
 ### The simlog Language
 A simple scripting language to build the circuits.
 #### Features:

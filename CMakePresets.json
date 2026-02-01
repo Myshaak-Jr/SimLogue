@@ -1,0 +1,92 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
+
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "SIMLOGUE_HIGH_PRECISION": "ON",
+        "SIMLOGUE_WARNINGS_AS_ERRORS": "OFF"
+      }
+    },
+
+    {
+      "name": "windows-vs",
+      "displayName": "Windows (Visual Studio)",
+      "inherits": "base",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64"
+    },
+
+    {
+      "name": "linux-base",
+      "hidden": true,
+      "inherits": "base",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "generator": "Ninja"
+    },
+    {
+      "name": "linux-debug",
+      "displayName": "Linux Debug",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "linux-release",
+      "displayName": "Linux Release",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+
+  "buildPresets": [
+    {
+      "name": "build-windows-debug",
+      "displayName": "Build (Windows Debug)",
+      "configurePreset": "windows-vs",
+      "configuration": "Debug",
+      "jobs": 8
+    },
+    {
+      "name": "build-windows-release",
+      "displayName": "Build (Windows Release)",
+      "configurePreset": "windows-vs",
+      "configuration": "Release",
+      "jobs": 8
+    },
+
+    {
+      "name": "build-linux-debug",
+      "displayName": "Build (Linux Debug)",
+      "configurePreset": "linux-debug",
+      "jobs": 8
+    },
+    {
+      "name": "build-linux-release",
+      "displayName": "Build (Linux Release)",
+      "configurePreset": "linux-release",
+      "jobs": 8
+    }
+  ]
+}

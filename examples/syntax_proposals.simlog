@@ -1,0 +1,22 @@
+// this wont work, a bunch of TODOs to make the simlog files easier to write
+
+// === part multideclaration ===
+resistor R{1-5}: 10kOhm
+resistor R{17-18,23}: 20kOhm
+
+ac_voltage_source AC_V1: 35Hz, 5V; AC_V2: 68Hz, 8V // maybe even something like this
+
+// === parallel shortcut ===
+
+V1 - R1 - ( R2 | R3 - R4 ) - GND
+
+// equivalent to:
+V1 - R1 - R2 - GND
+R1 - R3 - R4 - GND
+
+
+// === scope shortcuts ===
+
+scope current of R1, R4 and AC_V2 // ','s could be replaced with 'and's maybe
+scope voltage of R1, R4, AC_V2
+scope voltage between R1.a and GND, R2.b and GND and AC_V1 and GND

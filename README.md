@@ -29,13 +29,21 @@ Options:
 - You need to have [gnuplot](http://gnuplot.info/) installed to render the graphs
 
 ---
-### Build (CMake)
-```sh
-cmake -S . -B build
-cmake --build build
-```
+### Build
+#### On Linux
+Using cmake in the CLI
+```bash
+git clone https://github.com/Myshaak-Jr/SimLogue.git
+cd SimLogue
 
-The resulting executable is named `simlogue` in the build output directory.
+cmake --preset linux-release
+cmake --build --preset build-linux-debug
+```
+Resulting executable will be ./out/build/linux-release/simlogue.
+
+#### On Windows
+Using Visual Studio, open it as a CMake project, select Release and build all.
+Resulting executable will be ./out/build/windows-vs/Release/simlogue.exe
 
 ---
 ### The simlog Language

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "node.h"
+#include "circuit/node.h"
+
 #include <string>
 
 

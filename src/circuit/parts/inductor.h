@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../n_pin_part.h"
-#include "../part.h"
-#include "../pin.h"
-#include "../scalar.h"
+#include "circuit/n_pin_part.h"
+#include "circuit/part.h"
+#include "circuit/pin.h"
+#include "circuit/scalar.h"
+
 #include <string>
 
 
@@ -26,5 +27,5 @@ public:
 
 	scalar get_current_between(const ConstPin &a, const ConstPin &b) const override;
 
-	void update_value_from_result(size_t i, scalar value) override { last_i = value; }
+	void update_value_from_result([[maybe_unused]] size_t i, scalar value) override { last_i = value; }
 };

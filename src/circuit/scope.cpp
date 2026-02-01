@@ -1,13 +1,13 @@
-#include "scope.h"
+#include "circuit/scope.h"
 
-#include <format>
-#include <fstream>
+#include "circuit/part.h"
+#include "circuit/pin.h"
+#include "circuit/scalar.h"
 
-#include "part.h"
-#include "pin.h"
-#include "scalar.h"
 #include <cassert>
 #include <filesystem>
+#include <format>
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
 

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../scalar.h"
-#include "../util.h"
+#include "circuit/scalar.h"
+#include "circuit/util.h"
+
 #include <array>
 #include <numbers>
 #include <optional>

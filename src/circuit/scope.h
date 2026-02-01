@@ -1,7 +1,8 @@
 #pragma once
 
-#include "pin.h"
-#include "scalar.h"
+#include "circuit/pin.h"
+#include "circuit/scalar.h"
+
 #include <filesystem>
 #include <memory>
 #include <sciplot/sciplot.hpp>
@@ -27,6 +28,7 @@ protected:
 
 public:
 	Scope(const ConstPin &a, const ConstPin &b, const fs::path &export_path, const std::string &values_name);
+	virtual ~Scope() = default;
 
 	virtual void record(scalar time) = 0;
 

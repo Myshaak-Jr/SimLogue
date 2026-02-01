@@ -1,8 +1,10 @@
-#include "../n_pin_part.h"
-#include "../part.h"
-#include "../pin.h"
-#include "../scalar.h"
-#include "current_source.h"
+#include "circuit/parts/current_source.h"
+
+#include "circuit/n_pin_part.h"
+#include "circuit/part.h"
+#include "circuit/pin.h"
+#include "circuit/scalar.h"
+
 #include <string>
 
 
@@ -11,7 +13,7 @@ CurrentSource::CurrentSource(const std::string &name, scalar current) :
 	current(current) {
 }
 
-void CurrentSource::stamp_rhs_entries(std::vector<scalar> &rhs, const StampParams &params) {
+void CurrentSource::stamp_rhs_entries(std::vector<scalar> &rhs, [[maybe_unused]] const StampParams &params) {
 	const auto &node0 = pin(0).node;
 	const auto &node1 = pin(1).node;
 
@@ -19,7 +21,7 @@ void CurrentSource::stamp_rhs_entries(std::vector<scalar> &rhs, const StampParam
 	if (!node1->is_ground) rhs[node1->node_id] = current;
 }
 
-scalar CurrentSource::get_current_between(const ConstPin &a, const ConstPin &b) const {
+scalar CurrentSource::get_current_between([[maybe_unused]] const ConstPin &a, [[maybe_unused]] const ConstPin &b) const {
 	return current;
 }
 

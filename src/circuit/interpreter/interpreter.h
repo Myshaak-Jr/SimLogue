@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../circuit.h"
-#include "../part.h"
-#include "quantity.h"
+#include "circuit/circuit.h"
+#include "circuit/interpreter/quantity.h"
+#include "circuit/part.h"
+
 #include <format>
 #include <istream>
 #include <string>

@@ -1,12 +1,12 @@
 #pragma once
 
+#include "circuit/node.h"
+#include "circuit/pin.h"
+#include "circuit/scalar.h"
+
 #include <string>
 #include <tuple>
 #include <vector>
-
-#include "node.h"
-#include "pin.h"
-#include "scalar.h"
 
 
 struct StampParams {
@@ -33,7 +33,7 @@ public:
 	virtual ConstPin pin(const std::string &pinname) const = 0;
 
 	virtual size_t num_needed_matrix_rows() const { return 0; };
-	virtual void set_first_matrix_row_id(size_t first_row_id) {}
+	virtual void set_first_matrix_row_id([[maybe_unused]] size_t first_row_id) {}
 	virtual size_t get_first_matrix_row_id() { return 0; };
 
 	virtual std::vector<std::tuple<size_t, size_t, scalar>> gen_matrix_entries(const StampParams &params) = 0;
@@ -45,7 +45,7 @@ public:
 	virtual scalar get_current_between(const ConstPin &a, const ConstPin &b) const = 0;
 
 	// i in range 0 .. num_needed_matrix_rows() - 1
-	virtual void update_value_from_result(size_t i, scalar value) {}
+	virtual void update_value_from_result([[maybe_unused]] size_t i, [[maybe_unused]] scalar value) {}
 
-	virtual void update(const StampParams &params) {};
+	virtual void update([[maybe_unused]] const StampParams &params) {};
 };

@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../n_pin_part.h"
-#include "../part.h"
-#include "../pin.h"
-#include "../scalar.h"
+#include "circuit/n_pin_part.h"
+#include "circuit/part.h"
+#include "circuit/pin.h"
+#include "circuit/scalar.h"
+
 #include <queue>
 #include <string>
 #include <vector>
@@ -41,7 +42,7 @@ public:
 	~Switch() noexcept = default;
 
 	std::vector<std::tuple<size_t, size_t, scalar>> gen_matrix_entries(const StampParams &params) override;
-	void stamp_rhs_entries(std::vector<scalar> &rhs, const StampParams &params) override {}
+	void stamp_rhs_entries([[maybe_unused]] std::vector<scalar> &rhs, [[maybe_unused]] const StampParams &params) override {}
 
 	void update(const StampParams &params) override;
 
@@ -57,5 +58,5 @@ public:
 	void set_first_matrix_row_id(size_t row_id) override { branch_id = row_id; }
 	size_t get_first_matrix_row_id() override { return branch_id; }
 
-	void update_value_from_result(size_t i, scalar value) override { last_i = value; }
+	void update_value_from_result([[maybe_unused]] size_t i, scalar value) override { last_i = value; }
 };

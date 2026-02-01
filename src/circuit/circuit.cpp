@@ -1,13 +1,15 @@
-#include "../lingebra/lingebra.h"
-#include "circuit.h"
-#include "interpreter/interpreter.h"
-#include "node.h"
-#include "part.h"
-#include "parts/voltage_source.h"
-#include "pin.h"
-#include "scalar.h"
-#include "scope.h"
-#include "util.h"
+#include "circuit/circuit.h"
+
+#include "circuit/interpreter/interpreter.h"
+#include "circuit/node.h"
+#include "circuit/part.h"
+#include "circuit/parts/voltage_source.h"
+#include "circuit/pin.h"
+#include "circuit/scalar.h"
+#include "circuit/scope.h"
+#include "circuit/util.h"
+#include "lingebra/lingebra.h"
+
 #include <cmath>
 #include <filesystem>
 #include <fstream>

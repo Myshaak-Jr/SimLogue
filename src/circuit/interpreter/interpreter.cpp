@@ -1,13 +1,14 @@
-#include "interpreter.h"
+#include "circuit/interpreter/interpreter.h"
 
-#include "../parts/ac_voltage_source.h"
-#include "../parts/capacitor.h"
-#include "../parts/current_source.h"
-#include "../parts/inductor.h"
-#include "../parts/resistor.h"
-#include "../parts/switch.h"
-#include "../parts/voltage_source.h"
-#include "../util.h"
+#include "circuit/parts/ac_voltage_source.h"
+#include "circuit/parts/capacitor.h"
+#include "circuit/parts/current_source.h"
+#include "circuit/parts/inductor.h"
+#include "circuit/parts/resistor.h"
+#include "circuit/parts/switch.h"
+#include "circuit/parts/voltage_source.h"
+#include "circuit/util.h"
+
 #include <iostream>
 #include <sstream>
 #include <tuple>
@@ -193,10 +194,9 @@ std::vector<std::string_view> Interpreter::tokenize(std::string_view line) {
 
 		if (line.substr(0, token_hi + 1).ends_with("//")) {
 			auto token = line.substr(token_lo, token_hi - token_lo - 1);
-
 			if (!token.empty()) tokens.push_back(token);
 
-			break;
+			return tokens;
 		}
 
 		if (token_hi == line.size()) {
@@ -225,7 +225,6 @@ std::vector<std::string_view> Interpreter::tokenize(std::string_view line) {
 			if (!token.empty()) tokens.push_back(token);
 
 			tokens.push_back(line.substr(token_hi, 1));
-
 			token_lo = token_hi + 1;
 		}
 

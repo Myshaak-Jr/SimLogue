@@ -1,7 +1,8 @@
 #pragma once
 
-#include "node.h"
-#include "part.h"
+#include "circuit/node.h"
+#include "circuit/part.h"
+
 #include <array>
 #include <format>
 #include <ranges>
@@ -36,7 +37,7 @@ public:
 			pin_names[i] = std::format("{}", static_cast<char>('a' + i));
 		}
 	};
-	~NPinPart() noexcept = default;
+	virtual ~NPinPart() noexcept = default;
 
 	constexpr size_t pin_count() const noexcept override { return N; }
 
@@ -73,8 +74,8 @@ public:
 
 	const std::string &get_name() const override { return name; }
 
-	void set_name(const std::string &name) override {
-		this->name = name;
+	void set_name(const std::string &new_name) override {
+		name = new_name;
 	}
 
 	Pin pin() requires(N == 1) { return pin(0); }

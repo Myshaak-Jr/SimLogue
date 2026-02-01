@@ -66,27 +66,27 @@
       "displayName": "Build (Windows Debug)",
       "configurePreset": "windows-vs",
       "configuration": "Debug",
-      "jobs": 0
+      "jobs": 8
     },
     {
       "name": "build-windows-release",
       "displayName": "Build (Windows Release)",
       "configurePreset": "windows-vs",
       "configuration": "Release",
-      "jobs": 0
+      "jobs": 8
     },
 
     {
       "name": "build-linux-debug",
       "displayName": "Build (Linux Debug)",
       "configurePreset": "linux-debug",
-      "jobs": 0
+      "jobs": 8
     },
     {
       "name": "build-linux-release",
       "displayName": "Build (Linux Release)",
       "configurePreset": "linux-release",
-      "jobs": 0
+      "jobs": 8
     }
   ]
 }

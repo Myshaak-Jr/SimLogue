@@ -1,6 +1,7 @@
 #pragma once
 
-#include "scalar.h"
+#include "circuit/scalar.h"
+
 #include <numbers>
 #include <string>
 

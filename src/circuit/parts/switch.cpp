@@ -1,9 +1,9 @@
-#include "switch.h"
+#include "circuit/parts/switch.h"
 
 
 Switch::Switch(const std::string &name, bool on) : NPinPart<2>(name), branch_id(0), last_i(0.0), on(on) {}
 
-std::vector<std::tuple<size_t, size_t, scalar>> Switch::gen_matrix_entries(const StampParams &params) {
+std::vector<std::tuple<size_t, size_t, scalar>> Switch::gen_matrix_entries([[maybe_unused]] const StampParams &params) {
 	const scalar req = on ? 0 : off_resistance;
 
 	std::vector<std::tuple<size_t, size_t, scalar>> entries;
@@ -40,7 +40,7 @@ void Switch::update(const StampParams &params) {
 	on = new_on;
 }
 
-scalar Switch::get_current_between(const ConstPin &a, const ConstPin &b) const {
+scalar Switch::get_current_between([[maybe_unused]] const ConstPin &a, [[maybe_unused]] const ConstPin &b) const {
 	return last_i;
 }
 

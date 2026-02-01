@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../n_pin_part.h"
-#include "../part.h"
-#include "../pin.h"
-#include "../scalar.h"
+#include "circuit/n_pin_part.h"
+#include "circuit/part.h"
+#include "circuit/pin.h"
+#include "circuit/scalar.h"
+
 #include <string>
 
 

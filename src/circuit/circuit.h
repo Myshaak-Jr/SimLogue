@@ -1,13 +1,14 @@
 #pragma once
 
-#include "../lingebra/lingebra.h"
-#include "n_pin_part.h"
-#include "node.h"
-#include "part.h"
-#include "parts/voltage_source.h"
-#include "pin.h"
-#include "scalar.h"
-#include "scope.h"
+#include "circuit/n_pin_part.h"
+#include "circuit/node.h"
+#include "circuit/part.h"
+#include "circuit/parts/voltage_source.h"
+#include "circuit/pin.h"
+#include "circuit/scalar.h"
+#include "circuit/scope.h"
+#include "lingebra/lingebra.h"
+
 #include <filesystem>
 #include <memory>
 #include <ranges>

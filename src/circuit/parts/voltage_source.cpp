@@ -1,28 +1,28 @@
-#include "voltage_source.h"
-#include <cassert>
+#include "circuit/parts/voltage_source.h"
 
+#include <cassert>
 
 
 VoltageSource::VoltageSource(const std::string &name, scalar voltage) : NPinPart<1>(name), voltage(voltage), branch_id(0), current(0) {}
 
 VoltageSource::~VoltageSource() {}
 
-std::vector<std::tuple<size_t, size_t, scalar>> VoltageSource::gen_matrix_entries(const StampParams &params) {
+std::vector<std::tuple<size_t, size_t, scalar>> VoltageSource::gen_matrix_entries([[maybe_unused]] const StampParams &params) {
 	const auto &node = pin().node;
 	if (node->is_ground) return {};
 
 	return { {node->node_id, branch_id, 1.0}, {branch_id, node->node_id, 1.0} };
 }
 
-scalar VoltageSource::get_current_between(const ConstPin &a, const ConstPin &b) const {
+scalar VoltageSource::get_current_between([[maybe_unused]] const ConstPin &a, [[maybe_unused]] const ConstPin &b) const {
 	return current;
 }
 
-void VoltageSource::stamp_rhs_entries(std::vector<scalar> &rhs, const StampParams &params) {
+void VoltageSource::stamp_rhs_entries(std::vector<scalar> &rhs, [[maybe_unused]] const StampParams &params) {
 	rhs[branch_id] += voltage;
 }
 
-void VoltageSource::update_value_from_result(size_t i, scalar value) {
+void VoltageSource::update_value_from_result([[maybe_unused]] size_t i, scalar value) {
 	current = value;
 }
 
@@ -32,7 +32,7 @@ VoltageSource2Pin::VoltageSource2Pin(const std::string &name, scalar voltage) : 
 
 VoltageSource2Pin::~VoltageSource2Pin() {}
 
-std::vector<std::tuple<size_t, size_t, scalar>> VoltageSource2Pin::gen_matrix_entries(const StampParams &params) {
+std::vector<std::tuple<size_t, size_t, scalar>> VoltageSource2Pin::gen_matrix_entries([[maybe_unused]] const StampParams &params) {
 	const auto &node0 = pin(0).node;
 	const auto &node1 = pin(1).node;
 
@@ -50,14 +50,14 @@ std::vector<std::tuple<size_t, size_t, scalar>> VoltageSource2Pin::gen_matrix_en
 	return entries;
 }
 
-void VoltageSource2Pin::stamp_rhs_entries(std::vector<scalar> &rhs, const StampParams &params) {
+void VoltageSource2Pin::stamp_rhs_entries(std::vector<scalar> &rhs, [[maybe_unused]] const StampParams &params) {
 	rhs[branch_id] += voltage;
 }
 
-scalar VoltageSource2Pin::get_current_between(const ConstPin &a, const ConstPin &b) const {
+scalar VoltageSource2Pin::get_current_between([[maybe_unused]] const ConstPin &a, [[maybe_unused]] const ConstPin &b) const {
 	return current;
 }
 
-void VoltageSource2Pin::update_value_from_result(size_t i, scalar value) {
+void VoltageSource2Pin::update_value_from_result([[maybe_unused]] size_t i, scalar value) {
 	current = value;
 }

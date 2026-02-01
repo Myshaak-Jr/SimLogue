@@ -1,8 +1,9 @@
+#include "circuit/parts/inductor.h"
+
 #include "../n_pin_part.h"
 #include "../part.h"
 #include "../pin.h"
 #include "../scalar.h"
-#include "inductor.h"
 #include <string>
 
 
@@ -40,6 +41,6 @@ void Inductor::stamp_rhs_entries(std::vector<scalar> &rhs, const StampParams &pa
 	rhs[branch_id] += -req * last_i;
 }
 
-scalar Inductor::get_current_between(const ConstPin &a, const ConstPin &b) const {
+scalar Inductor::get_current_between([[maybe_unused]] const ConstPin &a, [[maybe_unused]] const ConstPin &b) const {
 	return last_i;
 }

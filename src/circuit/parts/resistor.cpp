@@ -1,11 +1,11 @@
-#include "./resistor.h"
+#include "circuit/parts/resistor.h"
 
 
 Resistor::Resistor(const std::string &name, scalar ohms) : NPinPart<2>(name), ohms(ohms) {
 	conductance = 1.0f / ohms;
 }
 
-std::vector<std::tuple<size_t, size_t, scalar>> Resistor::gen_matrix_entries(const StampParams &params) {
+std::vector<std::tuple<size_t, size_t, scalar>> Resistor::gen_matrix_entries([[maybe_unused]] const StampParams &params) {
 	const auto &node0 = pin(0).node;
 	const auto &node1 = pin(1).node;
 

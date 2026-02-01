@@ -189,6 +189,11 @@ std::vector<std::string_view> Interpreter::tokenize(std::string_view line) {
 			}
 
 			++token_hi;
+
+			if (token_hi == line.size()) {
+				return tokens;
+			}
+
 			continue;
 		}
 
@@ -214,7 +219,7 @@ std::vector<std::string_view> Interpreter::tokenize(std::string_view line) {
 
 			parsing_comment = true;
 		}
-		else if (letter == ' ' || letter == '\t') {
+		else if (std::isspace(letter)) {
 			auto token = line.substr(token_lo, token_hi - token_lo);
 			if (!token.empty()) tokens.push_back(token);
 
@@ -383,7 +388,7 @@ void Interpreter::execute(std::istream &in) {
 
 	while (std::getline(in, line)) {
 		if (line.empty()) { ++i; continue; }
-		execute_line(line, i);
+		execute_line(line, i + 1);
 		++i;
 	}
 }

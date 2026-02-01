@@ -136,7 +136,7 @@ void Circuit::update(size_t step, scalar t) {
 void Circuit::run_for_steps(size_t num_steps) {
 	// TODO: do LU decomposition
 
-	std::cout << "Running for " << num_steps << " steps\n";
+	std::cout << "Running for " << num_steps << " steps" << std::endl;
 
 	size_t step = 0;
 	scalar t = 0;
@@ -171,7 +171,7 @@ void Circuit::scope_current(const ConstPin &a, const ConstPin &b) {
 }
 
 void Circuit::export_tables() const {
-	std::cout << "Exporting tables...\n";
+	std::cout << "Exporting tables..." << std::endl;
 
 	for (const auto &scope : scopes) {
 		scope->export_table();
@@ -206,8 +206,9 @@ void Circuit::show_graphs() const {
 }
 
 void Circuit::load_circuit(const fs::path &script) {
+	std::cout << "Loading circuit " << script << std::endl;
+
 	std::ifstream f(script);
-	f.imbue(std::locale(".UTF-8")); // this way the ° and Ω should be read correctly
 
 	if (!f) {
 		throw std::runtime_error("Cannot open script file: " + script.string());

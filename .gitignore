@@ -59,4 +59,8 @@ Desktop.ini
 *.swp
 *.swo
 *.tmp
+
+# =========================
+# Sciplot stuff
+# =========================
 /multishow0.plt

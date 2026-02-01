@@ -38,7 +38,7 @@ void Scope::export_table() const {
 	fs::remove(export_path.parent_path() / "latest" / filename);
 	fs::copy_file(filepath, export_path.parent_path() / "latest" / filename);
 
-	std::cout << "Exported " << values_name << " table " << filepath << "\n";
+	std::cout << "Exported " << values_name << " table " << filepath << std::endl;
 }
 
 void Scope::plot(sciplot::Plot2D &p) const {
@@ -61,7 +61,7 @@ void Scope::plot(sciplot::Plot2D &p) const {
 
 	p.legend().hide();
 
-	std::cout << "Plotted " << name << "\n";
+	std::cout << "Plotted " << name << std::endl;
 }
 
 

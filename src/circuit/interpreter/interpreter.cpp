@@ -51,8 +51,8 @@ Part *Interpreter::parse_part(const std::string &partname, size_t line_idx) cons
 
 Pin Interpreter::parse_pin(const std::string &pinname, size_t line_idx, bool support_twopin, size_t twopin_part_pin_id) const {
 	int dot_pos = -1;
-	for (int i = 0; static_cast<int>(i) < pinname.size(); ++i) {
-		if (pinname[i] == '.') dot_pos = i;
+	for (size_t i = 0; i < pinname.size(); ++i) {
+		if (pinname[i] == '.') dot_pos = static_cast<int>(i);
 	}
 
 	if (dot_pos == -1) {
@@ -69,7 +69,7 @@ Pin Interpreter::parse_pin(const std::string &pinname, size_t line_idx, bool sup
 		}
 	}
 
-	if (dot_pos == 0 || dot_pos == pinname.size() - 1) {
+	if (dot_pos == 0 || static_cast<size_t>(dot_pos) == pinname.size() - 1) {
 		throw ParseError(std::format("Name error on line {}: Invalid pin name '{}'.", line_idx, pinname));
 	}
 

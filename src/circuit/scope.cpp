@@ -13,8 +13,8 @@
 
 
 Scope::Scope(const ConstPin &a, const ConstPin &b, const fs::path &export_path, const std::string &values_name) :
-	a(a), b(b),
 	export_path(export_path),
+	a(a), b(b),
 	values_name(values_name) {
 	name = std::format("{}-between-{}-and-{}", values_name, a.name, b.name);
 }

@@ -13,7 +13,12 @@ std::string make_timestamp() {
 	auto t = system_clock::to_time_t(now);
 
 	std::tm tm{};
+
+#ifdef _WIN32
 	localtime_s(&tm, &t);
+#else
+	localtime_r(&t, &tm);
+#endif
 
 	return std::format("{:04}-{:02}-{:02}-{:02}-{:02}-{:02}",
 		tm.tm_year + 1900,

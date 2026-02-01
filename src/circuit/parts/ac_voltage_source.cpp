@@ -10,10 +10,10 @@
 
 AcVoltageSource::AcVoltageSource(const std::string &name, scalar frequency, scalar amplitude, scalar phase) :
 	NPinPart<1>(name),
-	branch_id(0),
-	current(0),
 	amplitude(amplitude),
-	phase(phase) {
+	phase(phase),
+	branch_id(0),
+	current(0) {
 
 	angular_vel = tau * frequency;
 	voltage = amplitude * std::sin(phase);
@@ -47,10 +47,10 @@ void AcVoltageSource::update(const StampParams &params) {
 
 AcVoltageSource2Pin::AcVoltageSource2Pin(const std::string &name, scalar frequency, scalar amplitude, scalar phase) :
 	NPinPart<2>(name),
-	branch_id(0),
-	current(0),
 	amplitude(amplitude),
-	phase(phase) {
+	phase(phase),
+	branch_id(0),
+	current(0) {
 
 	angular_vel = tau * frequency;
 	voltage = amplitude * std::sin(phase);

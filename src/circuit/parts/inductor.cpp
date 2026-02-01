@@ -10,8 +10,8 @@
 Inductor::Inductor(const std::string &name, scalar inductance) :
 	NPinPart<2>(name),
 	inductance(inductance),
-	branch_id(0),
-	last_i(0.0) {
+	last_i(0.0),
+	branch_id(0) {
 }
 
 std::vector<std::tuple<size_t, size_t, scalar>> Inductor::gen_matrix_entries(const StampParams &params) {

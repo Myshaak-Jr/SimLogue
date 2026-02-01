@@ -81,7 +81,8 @@ lingebra::Matrix<scalar> Circuit::build_matrix(const StampParams &params) const 
 	std::vector<std::tuple<size_t, size_t, scalar>> matrix_entries;
 
 	for (const auto &part : parts) {
-		matrix_entries.append_range(part->gen_matrix_entries(params));
+		auto entries = part->gen_matrix_entries(params);
+		matrix_entries.insert(matrix_entries.end(), entries.begin(), entries.end());
 	}
 
 	lingebra::Matrix<scalar> matrix(num_rows, num_rows);

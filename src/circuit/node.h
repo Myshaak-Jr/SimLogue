@@ -2,6 +2,8 @@
 
 #include "scalar.h"
 
+#include <cstddef>
+
 
 struct Node {
 	scalar voltage = 0.0;

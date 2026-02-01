@@ -87,7 +87,9 @@ void Interpreter::add_basic_part(const std::vector<std::string_view> &tokens, si
 	Part *part = nullptr;
 
 	// parse the constructor values
-	std::array<Value, N> parsed_values = { Value() };
+	std::array<Value, N> parsed_values{};
+	parsed_values.fill(Value{});
+
 	size_t values_size = 0;
 
 	bool first_param = true;
@@ -117,8 +119,10 @@ void Interpreter::add_basic_part(const std::vector<std::string_view> &tokens, si
 		++values_size;
 	}
 
-	std::array<bool, N> used_values = { false };
-	std::array<scalar, N> params = { 0.0 };
+	std::array<bool, N> used_values{};
+	used_values.fill(false);
+	std::array<scalar, N> params{};
+	params.fill(scalar{ 0 });
 
 	for (size_t i = 0; i < constructor_signature.size(); ++i) {
 		auto &[search_quantity, has_default, def_val] = constructor_signature[i];

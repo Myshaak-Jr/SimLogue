@@ -37,7 +37,7 @@ git clone https://github.com/Myshaak-Jr/SimLogue.git
 cd SimLogue
 
 cmake --preset linux-release
-cmake --build --preset build-linux-debug
+cmake --build --preset build-linux-release
 ```
 Resulting executable will be ./out/build/linux-release/simlogue.
 

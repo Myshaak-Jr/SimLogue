@@ -12,6 +12,7 @@
 
 #include <cmath>
 #include <filesystem>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -134,6 +135,17 @@ void Circuit::update(size_t step, scalar t) {
 }
 
 void Circuit::run_for_steps(size_t num_steps) {
+	if (parts.size() == 1) {
+		throw std::runtime_error("Error: Empty circuit, not running.");
+	}
+	for (const auto &part : parts) {
+		for (size_t i = 0; i < part->pin_count(); ++i) {
+			if (part->pin(i).node == nullptr) {
+				throw std::runtime_error(std::format("Error: Disconnected pin {}, not running.", part->pin(i).name));
+			}
+		}
+	}
+
 	// TODO: do LU decomposition
 
 	std::cout << "Running for " << num_steps << " steps" << std::endl;
@@ -215,4 +227,6 @@ void Circuit::load_circuit(const fs::path &script) {
 	}
 
 	interpreter->execute(f);
+
+	std::cout << "Loaded circuit" << std::endl;
 }

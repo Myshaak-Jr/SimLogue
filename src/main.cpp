@@ -34,16 +34,15 @@ int main(int argc, char *argv[]) {
 
 	try {
 		circuit.load_circuit(settings.circuit_path);
+		circuit.run_for_seconds(settings.duration);
+
+		if (settings.export_tables) circuit.export_tables();
+		if (settings.show_graphs) circuit.show_graphs();
 	}
 	catch (const std::exception &e) {
 		std::cerr << e.what() << "\n";
 		return 1;
 	}
-
-	circuit.run_for_seconds(settings.duration);
-
-	if (settings.export_tables) circuit.export_tables();
-	if (settings.show_graphs) circuit.show_graphs();
 
 	return 0;
 }

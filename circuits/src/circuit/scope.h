@@ -28,6 +28,8 @@ protected:
 public:
 	Scope(const ConstPin &a, const ConstPin &b, const fs::path &export_path, const std::string &values_name);
 
+	// TODO: add reserve method to reserve memory before the run
+
 	virtual void record(scalar time) = 0;
 
 	void export_table() const;

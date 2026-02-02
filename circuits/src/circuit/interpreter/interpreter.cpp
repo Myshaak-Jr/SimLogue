@@ -13,9 +13,7 @@
 #include <tuple>
 
 
-Interpreter::Interpreter(Circuit &circuit) : circuit(circuit), parsing_comment(false) {}
-
-void Interpreter::set_ground() {
+Interpreter::Interpreter(Circuit &circuit) : circuit(circuit), parsing_comment(false) {
 	parts["GND"] = circuit.get_ground();
 }
 
@@ -79,7 +77,13 @@ Pin Interpreter::parse_pin(const std::string &pinname, size_t line_idx, bool sup
 
 	auto part = parse_part(partname, line_idx);
 
-	return part->pin(pin);
+	try {
+		Pin p = part->pin(pin);
+		return p;
+	}
+	catch (const std::out_of_range &) {
+		throw ParseError(std::format("Name error on line {}: {} doesn't have pin {}.", line_idx, partname, pinname));
+	}
 }
 
 

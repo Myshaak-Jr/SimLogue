@@ -59,15 +59,15 @@ private:
 		add_basic_part<T, 0>(tokens, curr_token, line_idx, part_type_name, std::array<ParamInfo, 0>());
 	}
 
-public:
+	friend class Circuit;
 	Interpreter(Circuit &circuit);
 
-	static Value parse_value(std::string_view value_string, std::string_view where);
 	static Value parse_value(std::string_view value_string, size_t line_idx) {
 		return parse_value(value_string, std::format("on line {}", line_idx));
 	}
 
-	void set_ground();
+public:
+	static Value parse_value(std::string_view value_string, std::string_view where);
 
 	void execute(std::istream &in);
 	void execute(const std::string &script);

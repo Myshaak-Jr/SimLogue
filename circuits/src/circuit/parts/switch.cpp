@@ -33,10 +33,6 @@ void Switch::update(const StampParams &params) {
 		events.pop();
 	}
 
-	if (new_on != on) {
-		//...
-	}
-
 	on = new_on;
 }
 

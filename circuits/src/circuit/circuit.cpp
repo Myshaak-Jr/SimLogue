@@ -21,14 +21,14 @@
 Circuit::Circuit(scalar timestep, const fs::path &scope_export_path) :
 	timestep(timestep),
 	scope_export_path(scope_export_path / make_timestamp()),
-	interpreter(std::make_unique<Interpreter>(*this)) {
+	interpreter(nullptr) {
 	fs::create_directories(this->scope_export_path);
 	fs::create_directories(scope_export_path / "latest");
 	ground = add_part<VoltageSource>("GND", 0.0f);
 	Node *ground_node = create_new_node();
 	ground_node->is_ground = true;
 	ground->set_node(0, ground_node);
-	interpreter->set_ground();
+	interpreter = std::unique_ptr<Interpreter>(new Interpreter(*this));
 }
 
 Circuit::~Circuit() noexcept {}
@@ -109,7 +109,7 @@ void Circuit::update(size_t step, scalar t) {
 		part->stamp_rhs_entries(rhs, params);
 	}
 
-	lingebra::Vector<scalar> rhs_vec(rhs);
+	lingebra::Vector<scalar> rhs_vec(rhs); // TODO: do not copy the vector, just move it insted
 
 	//std::cout << matrix.repr() << "\n" << rhs_vec.repr() << "\n";
 

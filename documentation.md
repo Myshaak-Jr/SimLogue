@@ -348,7 +348,7 @@ It will modify the input matrix and the resulting vector $\vec{x}$ is stored in 
 ### Building and solving the matrix better
 Doing that every frame is of course a huge performance issue, with the matrix being mostly constant throughout the run making it almost pointless. I will replace this approach with a more performance friendly one in the future.
 
-Firstly, I will use a sparse matrix built only once at the beginning of the run. This can lower the time complexity quite significantly because the number of entries $\in \mathcal{O}(\text{num\_parts})$. I will use LU factorisation once with the attention to pivoting to keep it sparse and then just build the RHS vectors each frame.
+Firstly, I will use a sparse matrix built only once at the beginning of the run. This can lower the time complexity quite significantly because the number of entries $\in \mathcal{O}(P)$, where $P$ is the number of parts. I will use LU factorisation once with the attention to pivoting to keep it sparse and then just build the RHS vectors each frame.
 
 I realised that when I sort the nodes by their connected part count I can improve the sparsity without some specialized pivoting algorithm. The output nonzero entries footprint resembles the problem and the related diagram discussed in the book *Circuit Simulation (Farid N. Najm)* on the page 114 & 115. This of course pivots just the node part of the MNA matrix. Also this pivoting is just for sparsity and accuracy should be taken into account as well.
 

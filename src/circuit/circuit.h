@@ -1,6 +1,5 @@
 #pragma once
 
-#include "circuit/n_pin_part.h"
 #include "circuit/node.h"
 #include "circuit/part.h"
 #include "circuit/parts/voltage_source.h"
@@ -63,7 +62,13 @@ public:
 	void scope_voltage(const ConstPin &a, const ConstPin &b);
 	// Pin a and b must be of the same part or the single pin voltage source and ground pin
 	void scope_current(const ConstPin &a, const ConstPin &b);
-	inline void scope_current(const NPinPart<2> *part) {
+
+	template <class PartT>
+		requires std::is_base_of_v<Part, PartT>
+	inline void scope_current(const PartT *part) {
+		if (part->pin_count() != 2) {
+			throw std::runtime_error("You can only directly scope parts with 2 pins.");
+		}
 		scope_current(part->pin(0), part->pin(1));
 	}
 	inline void scope_current(const VoltageSource *part) {

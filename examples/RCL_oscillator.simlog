@@ -1,0 +1,26 @@
+// also taken from CircuitJS
+
+voltage_source V1: 5V
+resistor R1: 10_Ohm
+resistor R2: 100_Ohm
+inductor I1: 1H
+capacitor C1: 15uF
+switch S1
+
+
+V1 - S1 - I1 - R2 - GND
+
+S1 - R1 - C1 - R2
+
+
+turn on S1 at 0s
+turn off S1 at 100ms
+
+scope voltage of R1
+scope current of R1
+
+scope voltage of I1
+scope current of I1
+
+scope voltage of C1
+scope current of C1

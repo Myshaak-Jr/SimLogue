@@ -1,0 +1,19 @@
+// this illustrates how the current source changes
+// voltage when the smaller resistance is applied
+
+current_source I1: 10_mA
+
+resistor R1: 100_Ω
+resistor R2: 4_kΩ
+
+switch S1
+
+
+// GND - I1 - ( S1 - R1 | R2 ) - GND
+
+GND - I1 - S1 - R1 - GND
+      I1 - R2 - GND
+
+turn on S1 at 50ms
+
+scope voltage between I1.b and GND

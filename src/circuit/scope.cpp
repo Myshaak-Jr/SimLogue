@@ -57,7 +57,7 @@ void Scope::plot(sciplot::Plot2D &p) const {
 	}
 
 	p.xlabel("time");
-	p.ylabel(values_name);
+	p.ylabel(std::format("{} ({})", values_name, name));
 
 	p.legend().hide();
 

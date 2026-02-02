@@ -4,7 +4,7 @@ SimLogue is an analogue circuit simulator. The goal is to simulate modular synth
 ---
 ### Features
 - Currently supports these components:
-	- voltage (single and double pin) and current sources
+	- voltage (single and double pin, ac/dc) and current sources
 	- linear inductors, capacitors and resistors
 	- switches
 - Voltage and current scopes
@@ -51,11 +51,11 @@ A simple scripting language to build the circuits.
 #### Features:
 
 **Comments:**
-Comment using C-style comments `// this will be commented`, `/* this is comment */`
+Comment using C-style comments `// this will be commented`, `/* this is a comment */`
 
 **Components:**
 Create a new component by writing:
-`<component> <name>[: <value> ...]`
+`<component> <name>[: <value>, ...]`
 
 **List of available components:**
 - `capacitor`
@@ -65,6 +65,8 @@ Create a new component by writing:
 - `switch` - doesn't need the value
 - `voltage_source` - single pin version
 - `voltage_source_2P` - two pin version
+- `ac_voltage_source` - single pin version
+- `ac_voltage_source_2P` - two pin version
 
 **Names:**
 All names must be in the format: `[A-Za-z_][A-Za-z0-9_]*`
@@ -84,7 +86,7 @@ The cannot be a space between the value and the unit, you can use an underscore.
 - Frequency - Hz
 - Angle - rad, deg, grad, °
 
-You can use multipliers like `E, P, T, G, M, k, m, u, n, p, f, a` between the value and unit.
+You can use multipliers like `E, P, T, G, M, k, m, u, n, p, f, a` between the value and unit, $\mi$ instead of `u` is also supported.
 
 When using mutlipliers you can put '_' between them and the unit itself for readability: `k_Ohm` or in the future when for example units of length get added to differentiate between milli inches and minutes: `m_in` vs `min`.
 
@@ -122,7 +124,11 @@ Switched can be scheduled by writing: `turn (on|off) <switch-name> at <time>`
 
 The corresponding switch will then set its state to the specified one when the simulation time reaches `<time>`. The time is specified using the `<value>` format with the unit being `s`.
 
-****
+---
+### Examples
+Some example circuit can be found in the `./examples/` directory.
+
+---
 ### Technology
 - The simulator uses the [MNA](https://spinningnumbers.org/assets/MNA75.pdf) approach.
 - Currently I use gaussian elimination to solve the system
@@ -133,3 +139,8 @@ The corresponding switch will then set its state to the specified one when the s
 - Use sparse matrices and LU factorization with precalculated pivoting, the method Part::gen_matrix_entries is prepared to generate the entries for the sparse matrix.
 - Create a multi-circuit system, that can be connected using buffered voltage inputs and outputs, every circuit will have its own matrix and thread.
 - Make it real-time and export directly to the audio buffer.
+
+---
+### Known issues
+- The gaussian elimination doesn't work with modulo integers, because it uses comparison.
+- The gnuplot errors when having a number of scopes that can't be put into a 16:9 grid. 

@@ -86,7 +86,7 @@ The cannot be a space between the value and the unit, you can use an underscore.
 - Frequency - Hz
 - Angle - rad, deg, grad, °
 
-You can use multipliers like `E, P, T, G, M, k, m, u, n, p, f, a` between the value and unit, $\mi$ instead of `u` is also supported.
+You can use multipliers like `E, P, T, G, M, k, m, u, n, p, f, a` between the value and unit, $\micro$ instead of `u` is also supported.
 
 When using mutlipliers you can put '_' between them and the unit itself for readability: `k_Ohm` or in the future when for example units of length get added to differentiate between milli inches and minutes: `m_in` vs `min`.
 

@@ -15,7 +15,6 @@
 #endif
 
 
-// TODO: empty file throws segfault
 // TODO: some mutlishow plt error idk idc, it works
 
 

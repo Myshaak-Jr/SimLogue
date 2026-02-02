@@ -62,7 +62,7 @@ Create a new component by writing:
 - `current_source`
 - `inductor`
 - `resistor`
-- `switch` - doesn't need the value
+- `switch` - doesn't need the value - off by default
 - `voltage_source` - single pin version
 - `voltage_source_2P` - two pin version
 - `ac_voltage_source` - single pin version

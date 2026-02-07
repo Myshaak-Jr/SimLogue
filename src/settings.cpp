@@ -102,7 +102,7 @@ Settings handle_args(int argc, char *argv[]) {
 					auto [quantity, duration] = Interpreter::parse_value(argv[i], "in param duration");
 
 					if (quantity != Quantity::Time) {
-						throw ParseError("Value error in param duration: Duration has to be a time value.");
+						throw ParseError(std::format("Value error in param duration: Duration has to be a time value, got value of type '{}'.", quantity_to_string(quantity)));
 					}
 
 					settings.duration = duration;

@@ -17,7 +17,9 @@ enum class Quantity {
 	Inductance,
 	Time,
 	Frequency,
-	Angle
+	Angle,
+	None,
+	Unknown
 };
 
 struct UnitInfo {
@@ -31,7 +33,7 @@ struct UnitEntry {
 };
 
 
-constexpr std::array<UnitEntry, 14> unit_table{ {
+constexpr std::array<UnitEntry, 15> unit_table{ {
 		// Current
 		{ "A",    { Quantity::Current, 1.0 } },
 		{ "Am",   { Quantity::Current, 1.0 } },
@@ -61,6 +63,9 @@ constexpr std::array<UnitEntry, 14> unit_table{ {
 		{ "deg",  { Quantity::Angle, tau / 360.0 } },
 		{ "°",    { Quantity::Angle, tau / 360.0 } },
 		{ "grad", { Quantity::Angle, tau / 400.0 } },
+
+		// Null unit
+		{ "", { Quantity::None, 1.0 } },
 	} };
 
 
@@ -76,17 +81,19 @@ constexpr std::array<UnitEntry, 14> unit_table{ {
 		case Time:        return "s";
 		case Frequency:   return "Hz";
 		case Angle:       return "rad";
+		case None:        return "";
+		case Unknown:     return "?";
 	}
 
 	return "?";
 }
 
-[[nodiscard]] constexpr std::optional<UnitInfo> unit_to_quantity(std::string_view unit) noexcept {
+[[nodiscard]] constexpr UnitInfo unit_to_quantity(std::string_view unit) noexcept {
 	for (const auto &entry : unit_table) {
 		if (entry.unit == unit) return entry.info;
 	}
 
-	return std::nullopt;
+	return { Quantity::Unknown, 1.0 };
 }
 
 [[nodiscard]] constexpr std::string_view quantity_to_string(const Quantity &quantity) noexcept {
@@ -101,6 +108,8 @@ constexpr std::array<UnitEntry, 14> unit_table{ {
 		case Time:        return "time";
 		case Frequency:   return "frequency";
 		case Angle:       return "angle";
+		case None:        return "none";
+		case Unknown:     return "?";
 	}
 
 	return "?";

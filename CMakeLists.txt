@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(SimLogue VERSION 0.2.2 LANGUAGES CXX)
+project(SimLogue VERSION 0.2.3 LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 

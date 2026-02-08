@@ -14,10 +14,10 @@ Inductor::Inductor(const std::string &name, scalar inductance) :
 	branch_id(0) {
 }
 
-std::vector<std::tuple<size_t, size_t, scalar>> Inductor::gen_matrix_entries(const StampParams &params) {
+std::vector<MatrixEntry> Inductor::gen_matrix_entries(const StampParams &params) {
 	const scalar req = inductance * params.timestep_inv;
 
-	std::vector<std::tuple<size_t, size_t, scalar>> entries;
+	std::vector<MatrixEntry> entries;
 
 	entries.push_back({ branch_id, branch_id, -req });
 

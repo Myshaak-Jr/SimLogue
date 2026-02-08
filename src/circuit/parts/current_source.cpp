@@ -17,8 +17,8 @@ void CurrentSource::stamp_rhs_entries(std::vector<scalar> &rhs, [[maybe_unused]]
 	const auto &node0 = pin(0).node;
 	const auto &node1 = pin(1).node;
 
-	if (!node0->is_ground) rhs[node0->node_id] = -current;
-	if (!node1->is_ground) rhs[node1->node_id] = current;
+	if (!node0->is_ground) rhs[node0->node_id] += -current;
+	if (!node1->is_ground) rhs[node1->node_id] += current;
 }
 
 scalar CurrentSource::get_current_between([[maybe_unused]] const ConstPin &a, [[maybe_unused]] const ConstPin &b) const {

@@ -27,7 +27,7 @@ static void print_help() {
 		<< "  -v, --version             Show version information\n"
 		<< "  -h, --help			    Show this help message\n"
 		<< "  -r, --samplerate <freq>   Sets the samplerate in Hz\n"
-		<< "                            (default: 44100)\n"
+		<< "                            (default: 44100_Hz)\n"
 		<< "  -e, --export-tables       Exports the scope tables\n"
 		<< "  -g, --show-graphs         Displays the scope graphs after run\n\n"
 		;
@@ -80,10 +80,16 @@ Settings handle_args(int argc, char *argv[]) {
 				return Settings{ .exit = true, .exit_code = 2 };
 			}
 			try {
-				settings.samplerate = std::stof(argv[i]);
+				auto [quantity, samplerate] = Interpreter::parse_value(argv[i], "in param samplerate");
+
+				if (quantity != Quantity::Frequency) {
+					throw ParseError(std::format("Value error in param samplerate: Duration has to be a frequency value, got value of type '{}'.", quantity_to_string(quantity)));
+				}
+
+				settings.samplerate = samplerate;
 			}
-			catch (const std::exception &) {
-				std::cout << "Argument <freq> must be a floating point number in valid range.\nSee help:\n\n";
+			catch (const std::exception &e) {
+				std::cout << e.what() << "\nSee help: \n\n";
 				print_help();
 				return Settings{ .exit = true, .exit_code = 2 };
 			}

@@ -1,0 +1,13 @@
+
+current_source I1: 1mA
+capacitor C1: 47nF
+op_amp U1
+
+
+GND - I1 - C1 - U1.out
+
+U1.minus - C1
+U1.plus - GND
+
+
+scope voltage between U1.out and GND

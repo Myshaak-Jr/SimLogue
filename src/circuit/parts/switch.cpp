@@ -3,10 +3,10 @@
 
 Switch::Switch(const std::string &name, bool on) : NPinPart<2>(name), branch_id(0), last_i(0.0), on(on) {}
 
-std::vector<std::tuple<size_t, size_t, scalar>> Switch::gen_matrix_entries([[maybe_unused]] const StampParams &params) {
-	const scalar req = on ? 0 : off_resistance;
+std::vector<MatrixEntry> Switch::gen_matrix_entries([[maybe_unused]] const StampParams &params) {
+	const scalar req = on ? on_resistance : off_resistance;
 
-	std::vector<std::tuple<size_t, size_t, scalar>> entries;
+	std::vector<MatrixEntry> entries;
 
 	entries.push_back({ branch_id, branch_id, -req });
 

@@ -16,17 +16,13 @@ private:
 
 	std::string name;
 
-protected:
-	std::array<std::string, N> pin_names;
+	std::array<std::string_view, N> pin_names;
 
+protected:
 	void assert_pin_id(size_t pin_id) const {
 		if (pin_id >= N) {
 			throw std::out_of_range(std::format("NPinPart<{}> does not have pin {}", N, pin_id));
 		}
-	}
-
-	virtual std::string get_pin_name(size_t pin_id) const noexcept {
-		return pin_names[pin_id];
 	}
 
 public:
@@ -40,6 +36,10 @@ public:
 	virtual ~NPinPart() noexcept = default;
 
 	constexpr size_t pin_count() const noexcept override { return N; }
+
+	virtual std::string_view get_pin_name(size_t pin_id) const noexcept {
+		return pin_names[pin_id];
+	}
 
 	void set_node(size_t pin_id, Node *node) override {
 		assert_pin_id(pin_id);
@@ -58,7 +58,7 @@ public:
 
 	Pin pin(const std::string &pinname) override {
 		for (size_t i = 0; i < pin_names.size(); ++i) {
-			if (pin_names[i] == pinname) return pin(i);
+			if (get_pin_name(i) == pinname) return pin(i);
 		}
 
 		throw std::out_of_range(std::format("NPinPart<{}> does not have pin {}", N, pinname));
@@ -66,7 +66,7 @@ public:
 
 	ConstPin pin(const std::string &pinname) const override {
 		for (size_t i = 0; i < pin_names.size(); ++i) {
-			if (pin_names[i] == pinname) return pin(i);
+			if (get_pin_name(i) == pinname) return pin(i);
 		}
 
 		throw std::out_of_range(std::format("NPinPart<{}> does not have pin {}", N, pinname));

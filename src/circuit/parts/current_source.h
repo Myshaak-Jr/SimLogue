@@ -16,7 +16,7 @@ public:
 	CurrentSource(const std::string &name, scalar current);
 	~CurrentSource() noexcept = default;
 
-	std::vector<std::tuple<size_t, size_t, scalar>> gen_matrix_entries([[maybe_unused]] const StampParams &params) override { return {}; }
+	std::vector<MatrixEntry> gen_matrix_entries([[maybe_unused]] const StampParams &params) override { return {}; }
 	void stamp_rhs_entries(std::vector<scalar> &rhs, const StampParams &params) override;
 
 	scalar get_current_between(const ConstPin &a, const ConstPin &b) const override;

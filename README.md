@@ -57,16 +57,19 @@ Comment using C-style comments `// this will be commented`, `/* this is a commen
 Create a new component by writing:
 `<component> <name>[: <value>, ...]`
 
-**List of available components:**
-- `capacitor`
-- `current_source`
-- `inductor`
-- `resistor`
-- `switch` - doesn't need the value - off by default
-- `voltage_source` - single pin version
-- `voltage_source_2P` - two pin version
-- `ac_voltage_source` - single pin version
-- `ac_voltage_source_2P` - two pin version
+Each component has a constructor footprint consisting of quantity values. Different values can be listed in any order and the interpreter will match them to the correct quantity, only exception are values of the same quantity, these have to be listed in the correct order.
+
+**List of available components with their constructors:**
+- `capacitor: capacity`
+- `current_source: current`
+- `inductor: inductance`
+- `resistor: resistance`
+- `switch` - off by default
+- `voltage_source: voltage` - single pin version
+- `voltage_source_2P: voltage` - two pin version
+- `ac_voltage_source: amplitude (voltage), frequency, phase (time) = 0s` - single pin version
+- `ac_voltage_source_2P: amplitude (voltage), frequency, phase (time) = 0s` - two pin version
+- `op_amp: low saturation voltage, high saturation voltage, amplification (none) = 100000` - operational amplifier
 
 **Names:**
 All names must be in the format: `[A-Za-z_][A-Za-z0-9_]*`
@@ -85,6 +88,7 @@ The cannot be a space between the value and the unit, you can use an underscore.
 - Time - s, min
 - Frequency - Hz
 - Angle - rad, deg, grad, °
+- None - `""`
 
 You can use multipliers like `E, P, T, G, M, k, m, u, n, p, f, a` between the value and unit, $\micro$ instead of `u` is also supported.
 
@@ -93,6 +97,8 @@ When using mutlipliers you can put '_' between them and the unit itself for read
 That being said, when no underscore is present in the unit name, the parser will first try to parse as a whole unit name, and if it fails to do so it will proceed to parse the first letter as a multiplier. 
 
 Units such as `mdeg` or `Grad` (giga radian) are technically supported although not recommended, `Grad` can be especially confusing with `grad` being a real unit. 
+
+The "none" quantity cannot have modifiers;
 
 **Connections:**
 Parts can be connected by simply writing: `V1 - R1`

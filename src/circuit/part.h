@@ -17,6 +17,12 @@ struct StampParams {
 	scalar time;
 };
 
+struct MatrixEntry {
+	size_t row;
+	size_t col;
+	scalar value;
+};
+
 
 class Part {
 public:
@@ -36,7 +42,7 @@ public:
 	virtual void set_first_matrix_row_id([[maybe_unused]] size_t first_row_id) {}
 	virtual size_t get_first_matrix_row_id() { return 0; };
 
-	virtual std::vector<std::tuple<size_t, size_t, scalar>> gen_matrix_entries(const StampParams &params) = 0;
+	virtual std::vector<MatrixEntry> gen_matrix_entries(const StampParams &params) = 0;
 	virtual void stamp_rhs_entries(std::vector<scalar> &rhs, const StampParams &params) = 0;
 
 	virtual const std::string &get_name() const = 0;

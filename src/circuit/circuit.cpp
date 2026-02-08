@@ -79,7 +79,7 @@ lingebra::Matrix<scalar> Circuit::build_matrix(const StampParams &params) const 
 	}
 
 	// [(row, column, data), ...]
-	std::vector<std::tuple<size_t, size_t, scalar>> matrix_entries;
+	std::vector<MatrixEntry> matrix_entries;
 
 	for (const auto &part : parts) {
 		auto entries = part->gen_matrix_entries(params);
@@ -115,7 +115,7 @@ void Circuit::update(size_t step, scalar t) {
 
 	lingebra::Vector<scalar> rhs_vec(rhs); // TODO: do not copy the vector, just move it insted
 
-	//std::cout << matrix.repr() << "\n" << rhs_vec.repr() << "\n";
+	std::cout << matrix.repr() << "\n" << rhs_vec.repr() << "\n";
 
 	lingebra::solve_gaussian_elimination(matrix, rhs_vec);
 
@@ -148,7 +148,7 @@ void Circuit::run_for_steps(size_t num_steps) {
 
 	// TODO: do LU decomposition
 
-	std::cout << "Running for " << num_steps << " steps" << std::endl;
+	std::cout << "Running for " << num_steps << " steps with frequency=" << 1.0_s / timestep << std::endl;
 
 	size_t step = 0;
 	scalar t = 0;

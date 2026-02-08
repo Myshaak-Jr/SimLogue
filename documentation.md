@@ -16,7 +16,7 @@ It also supports building with half the floating point precision by turning the 
 
 ---
 ### Scalar definition
-The scalar type is either a double or a float depending on the build options. It also defines custom numerical literals for kilo, mega, giga, mili, micro, nano and pico, with the value being mutliplied accordingly.
+The scalar type is either a double or a float depending on the build options. It also defines custom numerical literals for kilo, mega, giga, mili, micro, nano and pico, with the value being mutliplied accordingly. There is also the literar `_s` which just converts the value to the scalar type, I have yet to convert all literars to `_s`.
 
 ---
 ### Utilities
@@ -152,6 +152,8 @@ Currently, there are these part types available:
 8. `Inductor`
    Basic linear inductor.
 9. `Switch`
+10. `OpAmp`
+   Operational amplifier.
 
 **Switches:**
 The switch basically works as a variable resistor, switching between 0 and high resistance without changing the circuit topology. The high resistance is $10\,M\Omega$. Sadly when you do not want to change the topology in the middle of the run you can either have zero resistance when on and finite resistance off or 0 conductance off and finite conductance on, I will need to test which is better in the future.
@@ -159,6 +161,11 @@ The switch basically works as a variable resistor, switching between 0 and high 
 The switch can be scheduled using its built-in event scheduling system. It uses the standard priority queue to enqueue and retrieve the events. The `schedule_on(size_t step)` and `schedule_off(size_t step)` are used for this task. 
 
 `std::priority_queue<T>` does not ensure stability. As a result, when two events get scheduled to the same step the pop order is unspecified.
+
+**Op Amps**
+Those are implemented using switching states betweens `Linear`, where it behaves like an ideal linear amplifier and `SatHigh` and `SatLow` where it behaves like a voltage source.
+
+There is a small hysteresis (1e-3) between the state switching to minimize rapid oscillations.
 
 ---
 

@@ -21,7 +21,7 @@ AcVoltageSource::AcVoltageSource(const std::string &name, scalar frequency, scal
 
 AcVoltageSource::~AcVoltageSource() {}
 
-std::vector<std::tuple<size_t, size_t, scalar>> AcVoltageSource::gen_matrix_entries([[maybe_unused]] const StampParams &params) {
+std::vector<MatrixEntry> AcVoltageSource::gen_matrix_entries([[maybe_unused]] const StampParams &params) {
 	const auto &node = pin().node;
 	if (node->is_ground) return {};
 
@@ -58,11 +58,11 @@ AcVoltageSource2Pin::AcVoltageSource2Pin(const std::string &name, scalar frequen
 
 AcVoltageSource2Pin::~AcVoltageSource2Pin() {}
 
-std::vector<std::tuple<size_t, size_t, scalar>> AcVoltageSource2Pin::gen_matrix_entries([[maybe_unused]] const StampParams &params) {
+std::vector<MatrixEntry> AcVoltageSource2Pin::gen_matrix_entries([[maybe_unused]] const StampParams &params) {
 	const auto &node0 = pin(0).node;
 	const auto &node1 = pin(1).node;
 
-	std::vector<std::tuple<size_t, size_t, scalar>> entries;
+	std::vector<MatrixEntry> entries;
 
 	if (!node0->is_ground) {
 		entries.push_back({ node0->node_id, branch_id, 1.0 });

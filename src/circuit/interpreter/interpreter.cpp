@@ -4,6 +4,7 @@
 #include "circuit/parts/capacitor.h"
 #include "circuit/parts/current_source.h"
 #include "circuit/parts/inductor.h"
+#include "circuit/parts/op_amp.h"
 #include "circuit/parts/resistor.h"
 #include "circuit/parts/switch.h"
 #include "circuit/parts/voltage_source.h"
@@ -83,7 +84,7 @@ Pin Interpreter::parse_pin(const std::string &pinname, size_t line_idx, bool sup
 		return p;
 	}
 	catch (const std::out_of_range &) {
-		throw ParseError(std::format("Name error on line {}: {} doesn't have pin {}.", line_idx, partname, pinname));
+		throw ParseError(std::format("Name error on line {}: {} doesn't have pin {}.", line_idx, partname, pin));
 	}
 }
 
@@ -250,33 +251,71 @@ void Interpreter::execute_line(std::string_view line, size_t line_idx) {
 	size_t curr_token = 0;
 	auto token = tokens[curr_token];
 
+	// parts
+
 	if (token == "capacitor") {
-		add_basic_part<Capacitor>(tokens, curr_token, line_idx, "capacitor", std::array<ParamInfo, 1>{ Capacitance });
+		add_basic_part<Capacitor>(
+			tokens, curr_token, line_idx, "capacitor",
+			std::array<ParamInfo, 1>{ Capacitance }
+		);
 	}
 	else if (token == "current_source") {
-		add_basic_part<CurrentSource>(tokens, curr_token, line_idx, "current_source", std::array<ParamInfo, 1>{ Current });
+		add_basic_part<CurrentSource>(
+			tokens, curr_token, line_idx, "current_source",
+			std::array<ParamInfo, 1>{ Current }
+		);
 	}
 	else if (token == "inductor") {
-		add_basic_part<Inductor>(tokens, curr_token, line_idx, "inductor", std::array<ParamInfo, 1>{ Inductance });
+		add_basic_part<Inductor>(
+			tokens, curr_token, line_idx, "inductor",
+			std::array<ParamInfo, 1>{ Inductance }
+		);
 	}
 	else if (token == "resistor") {
-		add_basic_part<Resistor>(tokens, curr_token, line_idx, "resistor", std::array<ParamInfo, 1>{ Resistance });
+		add_basic_part<Resistor>(
+			tokens, curr_token, line_idx, "resistor",
+			std::array<ParamInfo, 1>{ Resistance }
+		);
 	}
 	else if (token == "switch") {
-		add_basic_part<Switch>(tokens, curr_token, line_idx, "switch");
+		add_basic_part<Switch>(
+			tokens, curr_token, line_idx, "switch"
+		);
 	}
 	else if (token == "voltage_source") {
-		add_basic_part<VoltageSource>(tokens, curr_token, line_idx, "voltage_source", std::array<ParamInfo, 1>{ Voltage });
+		add_basic_part<VoltageSource>(
+			tokens, curr_token, line_idx,
+			"voltage_source",
+			std::array<ParamInfo, 1>{ Voltage }
+		);
 	}
 	else if (token == "voltage_source_2P") {
-		add_basic_part<VoltageSource2Pin>(tokens, curr_token, line_idx, "voltage_source_2P", std::array<ParamInfo, 1>{ Voltage });
+		add_basic_part<VoltageSource2Pin>(
+			tokens, curr_token, line_idx, "voltage_source_2P",
+			std::array<ParamInfo, 1>{ Voltage }
+		);
 	}
 	else if (token == "ac_voltage_source") {
-		add_basic_part<AcVoltageSource>(tokens, curr_token, line_idx, "ac_voltage_source", std::array<ParamInfo, 3>{ Frequency, Voltage, { Angle, 0.0 } });
+		add_basic_part<AcVoltageSource>(
+			tokens, curr_token, line_idx, "ac_voltage_source",
+			std::array<ParamInfo, 3>{ Frequency, Voltage, { Angle, 0.0_s } }
+		);
 	}
 	else if (token == "ac_voltage_source_2P") {
-		add_basic_part<AcVoltageSource2Pin>(tokens, curr_token, line_idx, "ac_voltage_source_2P", std::array<ParamInfo, 3>{ Frequency, Voltage, { Angle, 0.0 } });
+		add_basic_part<AcVoltageSource2Pin>(
+			tokens, curr_token, line_idx, "ac_voltage_source_2P",
+			std::array<ParamInfo, 3>{ Frequency, Voltage, { Angle, 0.0_s } }
+		);
 	}
+	else if (token == "op_amp") {
+		add_basic_part<OpAmp>(
+			tokens, curr_token, line_idx, "op_amp",
+			std::array<ParamInfo, 3>{{ { Voltage, -12.0_s }, { Voltage, 12.0_s }, { None, 1e5_s } }}
+		);
+	}
+
+	// other keywords
+
 	else if (token == "scope") {
 		if (++curr_token >= tokens.size()) throw ParseError(std::format("Syntax error on line {}: Expected token 'current' or 'voltage' after 'scope', got ''", line_idx));
 

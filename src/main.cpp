@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 	if (settings.exit) return settings.exit_code;
 
 
-	Circuit circuit(1e-5, settings.tables_path);
+	Circuit circuit(1.0_s / settings.samplerate, settings.tables_path);
 
 	try {
 		circuit.load_circuit(settings.circuit_path);

@@ -12,7 +12,9 @@
 
 class Switch : public NPinPart<2> {
 private:
-	const scalar off_resistance = 10_M;
+	const scalar off_resistance = 10_G;
+	const scalar on_resistance = 1_m;
+
 	size_t branch_id;
 	scalar last_i;
 
@@ -41,15 +43,15 @@ public:
 	Switch(const std::string &name, bool on = false);
 	~Switch() noexcept = default;
 
-	std::vector<std::tuple<size_t, size_t, scalar>> gen_matrix_entries(const StampParams &params) override;
+	std::vector<MatrixEntry> gen_matrix_entries(const StampParams &params) override;
 	void stamp_rhs_entries([[maybe_unused]] std::vector<scalar> &rhs, [[maybe_unused]] const StampParams &params) override {}
 
 	void update(const StampParams &params) override;
 
 	scalar get_current_between(const ConstPin &a, const ConstPin &b) const override;
 
-	void switch_on() { on = false; }
-	void switch_off() { on = true; }
+	void switch_on() { on = true; }
+	void switch_off() { on = false; }
 
 	void schedule_on(size_t step);
 	void schedule_off(size_t step);

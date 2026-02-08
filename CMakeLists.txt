@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(SimLogue VERSION 0.2.3 LANGUAGES CXX)
+project(SimLogue VERSION 0.3.1 LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -25,7 +25,7 @@ add_executable(simlogue
     src/circuit/parts/resistor.cpp
     src/circuit/parts/switch.cpp
     src/circuit/parts/voltage_source.cpp
-)
+ "src/circuit/parts/op_amp.h" "src/circuit/parts/op_amp.cpp")
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.h.in

@@ -8,6 +8,16 @@ using scalar = float;
 #endif // HIGH_PRECISION
 
 
+constexpr scalar operator""_s(long double v) {
+	return static_cast<scalar>(v);
+}
+
+constexpr scalar operator""_s(unsigned long long v) {
+	return static_cast<scalar>(v);
+}
+
+
+
 constexpr scalar operator""_k(long double v) {
 	return static_cast<scalar>(v) * 1e3;
 }
